@@ -20,7 +20,7 @@ import java.util.Vector;
 public class JSON implements DataManager {
     private JSONObject data;
 
-    JSON(){
+    public JSON(){
         loadData();
     }
     public JSONObject toJSONObj(WalletAccount acc){
