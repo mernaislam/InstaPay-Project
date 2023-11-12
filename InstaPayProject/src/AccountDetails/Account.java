@@ -10,6 +10,7 @@ public class Account {
     private String password;
     private String mobileNumber;
 
+    public Account(){}
     public Account(String username, String name, String password, String mobileNumber) {
         this.username = username;
         this.name = name;
@@ -21,9 +22,6 @@ public class Account {
 
     public String getUsername() {
         return username;
-    }
-    public String getName() {
-        return name;
     }
 
     public String getPassword() {
