@@ -7,8 +7,13 @@ import AccountDetails.WalletAccount;
 import Transaction.Bill;
 import Transaction.PaymentAPIProvider;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Vector;
 
@@ -68,18 +73,38 @@ public class JSON implements DataManager {
         return jsonBills;
     }
     public void loadData(){
-
+        JSONParser parser = new JSONParser();
+        try {
+            data = (JSONObject) parser.parse(new FileReader("Data.json"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
     }
     public void saveData(){
-
+        try {
+            FileWriter file = new FileWriter("Data.json");
+            file.write(data.toJSONString());
+            file.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     public Vector<Account> getAccounts(){
         Vector<Account> accounts = new Vector<>();
+
         return accounts;
     }
     public void addAccount(Account acc){
+        if(acc instanceof WalletAccount){
 
+        }
+        else if(acc instanceof BankAccount){
+
+        }
     }
+
     public boolean checkAuth(String uName, String password){
         return false;
     }
