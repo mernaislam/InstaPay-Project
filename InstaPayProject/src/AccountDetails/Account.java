@@ -1,5 +1,9 @@
 package AccountDetails;
 
+import Transaction.Bill;
+
+import java.util.List;
+
 public class Account {
     private String username;
     private String name;
@@ -12,9 +16,14 @@ public class Account {
         this.password = password;
         this.mobileNumber = mobileNumber;
     }
+    private AccountAPIProvider api;
+    private List<Bill> bills;
 
     public String getUsername() {
         return username;
+    }
+    public String getName() {
+        return name;
     }
 
     public String getPassword() {
@@ -44,6 +53,10 @@ public class Account {
         this.mobileNumber = mobileNumber;
     }
 
-//    private AccountAPIProvider password;
-//    private List<Bill> bills;
+    public AccountAPIProvider getApi() {
+        return api;
+    }
+    public List<Bill> getBills() {
+        return bills;
+    }
 }
