@@ -28,4 +28,24 @@ public class Bill {
     public PaymentAPIProvider getApiProvider() {
         return apiProvider;
     }
+
+    public void setTransactionDate(Date transactionDate) {
+        this.transactionDate = transactionDate;
+    }
+
+    public void setTransactionID(String transactionID) {
+        this.transactionID = transactionID;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    public void setMobileNumber(String mobileNumber) {
+        this.mobileNumber = mobileNumber;
+    }
+
+    public void setApiProvider(PaymentAPIProvider apiProvider) {
+        this.apiProvider = apiProvider;
+    }
 }

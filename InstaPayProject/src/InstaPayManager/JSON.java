@@ -14,6 +14,9 @@ import org.json.simple.parser.ParseException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
@@ -27,6 +30,7 @@ public class JSON implements DataManager {
         JSONObject walletAcc = new JSONObject();
         walletAcc.put("Username", acc.getUsername());
         walletAcc.put("Name", acc.getName());
+        walletAcc.put("Password", acc.getPassword());
         walletAcc.put("MobileNumber", acc.getMobileNumber());
         walletAcc.put("API", toJSONObj(acc.getApi()));
         walletAcc.put("Bills", toJSONObj(acc.getBills()));
@@ -37,6 +41,7 @@ public class JSON implements DataManager {
         JSONObject bankAcc = new JSONObject();
         bankAcc.put("Username", acc.getUsername());
         bankAcc.put("Name", acc.getName());
+        bankAcc.put("Password", acc.getPassword());
         bankAcc.put("MobileNumber", acc.getMobileNumber());
         bankAcc.put("API", toJSONObj(acc.getApi()));
         bankAcc.put("Bills", toJSONObj(acc.getBills()));
@@ -91,25 +96,124 @@ public class JSON implements DataManager {
             e.printStackTrace();
         }
     }
-    public Vector<Account> getAccounts(){
-        Vector<Account> accounts = new Vector<>();
-
-        return accounts;
-    }
     public void addAccount(Account acc){
         if(acc instanceof WalletAccount){
-
+            if (data.get("WalletAccounts") == null) {
+                data.put("WalletAccounts", new JSONObject());
+            }
+            if(walletAccountSize() == 0){
+                int size = walletAccountSize() + 1;
+                data.put("WalletAccSize", Integer.toString(size));
+            }
+            ((JSONObject)(data.get("WalletAccounts"))).put(walletAccountSize()+1, toJSONObj((WalletAccount) acc));
         }
         else if(acc instanceof BankAccount){
-
+            if (data.get("BankAccounts") == null) {
+                data.put("BankAccounts", new JSONObject());
+            }
+            if(bankAccountSize() == 0){
+                int size = bankAccountSize() + 1;
+                data.put("BankAccSize", Integer.toString(size));
+            }
+            ((JSONObject)(data.get("BankAccounts"))).put(bankAccountSize()+1, toJSONObj((BankAccount) acc));
         }
+        saveData();
+    }
+    public Bill toBill(JSONObject billJSON) throws java.text.ParseException {
+        Bill bill = new Bill();
+        for(Object keyStr : billJSON.keySet()){
+            bill.setTransactionDate(new SimpleDateFormat("dd/MM/yyyy").parse(billJSON.get("TransactionDate").toString()));
+            bill.setTransactionID(billJSON.get("TransactionID").toString());
+            bill.setAmount(Double.parseDouble(billJSON.get("Amount").toString()));
+            bill.setMobileNumber(billJSON.get("MobileNumber").toString());
+            bill.setApiProvider(InstaPayAPI.valueof(billJSON.get("APIProvider").toString()));
+        }
+        return bill;
+    }
+    public List<Bill> toListOfBills(JSONObject billsJSON){
+        List<Bill> bills = new ArrayList<>();
+        for(Object keyStr : billsJSON.keySet()){
+            bills.add(toBill(billsJSON.get(keyStr)));
+        }
+        return bills;
+    }
+    public WalletAccount getWalletAccount(JSONObject obj){
+        return new WalletAccount(
+                (String) obj.get("Username"),
+                (String) obj.get("Name"),
+                (String) obj.get("Password"),
+                (String) obj.get("MobileNumber"),
+//                (AccountAPIProvider) obj.get("API"),
+//                (List<Bill>) obj.get("Bills"),
+                (String) obj.get("WalletID"));
+    }
+    public BankAccount getBankAccount(JSONObject obj){
+        return new BankAccount(
+                (String) obj.get("Username"),
+                (String) obj.get("Name"),
+                (String) obj.get("Password"),
+                (String) obj.get("MobileNumber"),
+//                (AccountAPIProvider) obj.get("API"),
+//                (List<Bill>) obj.get("Bills"),
+                (String) obj.get("BankNumber"));
+    }
+    public Vector<WalletAccount> getWalletAccounts(){
+        Vector<WalletAccount> accounts = new Vector<>();
+        JSONObject walletAccounts = (JSONObject) data.get("WalletAccounts");
+        if(walletAccounts != null){
+            WalletAccount acc;
+            for(Object user: walletAccounts.values()){
+                acc = getWalletAccount((JSONObject) user);
+                accounts.add(acc);
+            }
+        }
+        return accounts;
+    }
+    public Vector<BankAccount> getBankAccounts(){
+        Vector<BankAccount> accounts = new Vector<>();
+        JSONObject bankAccounts = (JSONObject) data.get("BankAccounts");
+        if(bankAccounts != null){
+            BankAccount acc;
+            for(Object user: bankAccounts.values()){
+                acc = getBankAccount((JSONObject) user);
+                accounts.add(acc);
+            }
+        }
+        return accounts;
     }
 
-    public boolean checkAuth(String uName, String password){
+    public boolean checkAuth(Account acc){
+        String uName = acc.getUsername();
+        String password = acc.getPassword();
+        JSONObject accounts = null;
+        if(acc instanceof BankAccount)
+            accounts = (JSONObject) data.get("BankAccounts");
+        else if(acc instanceof WalletAccount)
+            accounts = (JSONObject) data.get("WalletAccounts");
+        if (accounts != null) {
+            for (Object account : accounts.values()) {
+                if (((JSONObject) account).get("Username").toString().equals(uName)
+                        && ((JSONObject) account).get("Password").toString().equals(password)) {
+                     return true;
+                }
+            }
+        }
         return false;
     }
     public boolean userExist(String uName){
         return false;
+    }
+    public int bankAccountSize() {
+        if (data.get("BankAccSize") == null) {
+            return 0;
+        }
+        return Integer.parseInt(data.get("BankAccSize").toString());
+    }
+    public int walletAccountSize() {
+        if (data.get("WalletAccSize") == null) {
+            return 0;
+        }
+        return Integer.parseInt(data.get("WalletAccSize").toString());
     }
 
 }

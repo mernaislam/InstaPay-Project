@@ -50,7 +50,6 @@ public class Account {
     public void setMobileNumber(String mobileNumber) {
         this.mobileNumber = mobileNumber;
     }
-
     public AccountAPIProvider getApi() {
         return api;
     }
