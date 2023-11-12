@@ -7,11 +7,15 @@ import AccountDetails.Account;
 import java.util.Vector;
 
 public class JSON implements DataManager {
-//    private JSONObject data;
-    public void saveData(){
+    private JSONObject data;
 
+    JSON(){
+        loadData();
     }
     public void loadData(){
+
+    }
+    public void saveData(){
 
     }
     public Vector<Account> getAccounts(){
@@ -21,4 +25,11 @@ public class JSON implements DataManager {
     public void addAccount(Account acc){
 
     }
+    public boolean checkAuth(String uName, String password){
+        return false;
+    }
+    public boolean userExist(String uName){
+        return false;
+    }
+
 }
