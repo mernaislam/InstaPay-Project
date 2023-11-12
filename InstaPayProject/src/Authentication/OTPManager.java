@@ -7,7 +7,4 @@ public class OTPManager {
         Random rnd = new Random();
         return 100000 + rnd.nextInt(900000);
     }
-    public boolean checkOTP(){
-        return true;
-    }
 }
