@@ -3,6 +3,7 @@ import Authentication.Authentication;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
+import InstaPayManager.GUIManager;
 
 public class Main {
     public static void run(){
@@ -123,6 +124,7 @@ public class Main {
         }
     }
     public static void main(String[] args) {
-        run();
+        GUIManager M = new GUManager();
+        M.run();
     }
 }
