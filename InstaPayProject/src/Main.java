@@ -1,5 +1,8 @@
+import InstaPayManager.GUIManager;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.print("Hello and welcome!");
+        GUIManager M = new GUManager();
+        M.run();
     }
 }
