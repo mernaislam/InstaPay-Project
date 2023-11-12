@@ -2,7 +2,7 @@ package Authentication;
 
 public class Authentication {
     // public Account user;
-    // OTPManager otp;
+     OTPManager otp;
     // DataManager dm;
 
     public boolean register(){
@@ -19,7 +19,7 @@ public class Authentication {
     }
 
     public boolean usernameExists(String username){
-        return true;
+        return false;
     }
 
 }

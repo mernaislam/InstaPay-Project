@@ -1,4 +1,4 @@
-import Authentication.Authentication;
+import Authentication.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,12 +22,13 @@ public class Main {
         };
 
         Authentication auth = new Authentication();
+        OTPManager otpManager = new OTPManager();
         Scanner sc = new Scanner(System.in);
         System.out.println("Welcome to InstaPay: \n1. Sign in \n2. Sign up \n3. Exit");
         int choice;
         choice = sc.nextInt();
         switch (choice) {
-            case 1 -> {
+            case 1 -> { // login
                 String username, password;
                 System.out.println("Please enter your credentials");
                 System.out.print("Username: ");
@@ -52,8 +53,9 @@ public class Main {
                     System.out.println("Returning to main menu ...");
                     run();
                 }
+                // display options based on account type
             }
-            case 2 -> {
+            case 2 -> { // sign up
                 String name, mobileNumber, username, password;
                 int accountChoice, bankChoice, walletChoice;
 
@@ -80,6 +82,10 @@ public class Main {
                         System.out.print("Invalid phone number, try again: ");
                         mobileNumber = sc.next();
                     }
+                    // verify it is registered in the bank
+
+                    // send OTP
+                    int otp = otpManager.getOTP(mobileNumber);
 
                 } else {
                     System.out.println("Please choose your Wallet:");
@@ -124,7 +130,8 @@ public class Main {
         }
     }
     public static void main(String[] args) {
-        GUIManager M = new GUManager();
-        M.run();
+//        GUIManager M = new GUIManager();
+//        M.run();
+        run();
     }
 }
