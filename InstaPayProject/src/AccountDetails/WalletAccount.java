@@ -15,8 +15,8 @@ public class WalletAccount extends Account{
         this.walletID = walletID;
     }
 
-    public WalletAccount(String accountID, String username, String name, String password, String mobileNumber, AccountAPIProvider api, List<Bill> bills, String walletID) {
-        super(accountID, username, name, password, mobileNumber, api, bills);
+    public WalletAccount(String accountID, String username, String name, String password, String mobileNumber, AccountAPIProvider api, String walletID) {
+        super(accountID, username, name, password, mobileNumber, api);
         this.walletID = walletID;
     }
 }

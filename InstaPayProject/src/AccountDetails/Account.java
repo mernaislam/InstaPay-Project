@@ -12,7 +12,6 @@ public abstract class Account {
     private String password;
     private String mobileNumber;
     private AccountAPIProvider api;
-    private List<Bill> bills;
 
     public String getUsername() {
         return username;
@@ -47,9 +46,6 @@ public abstract class Account {
     public AccountAPIProvider getApi() {
         return api;
     }
-    public List<Bill> getBills() {
-        return bills;
-    }
 
     public String getAccountID() {
         return accountID;
@@ -59,13 +55,12 @@ public abstract class Account {
         this.accountID = accountID;
     }
 
-    public Account(String accountID, String username, String name, String password, String mobileNumber, AccountAPIProvider api, List<Bill> bills) {
+    public Account(String accountID, String username, String name, String password, String mobileNumber, AccountAPIProvider api) {
         this.accountID = accountID;
         this.username = username;
         this.name = name;
         this.password = password;
         this.mobileNumber = mobileNumber;
         this.api = api;
-        this.bills = bills;
     }
 }

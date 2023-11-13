@@ -1,1 +1,12 @@
-{"AccountSize":"4","Accounts":{"1":{"MobileNumber":"01022199451","BankNumber":"105","AccountID":"1","Username":"nadamohamed","API":{"APIUrl":"www.bank.com","Name":"CIBAccount"},"Name":"nad","Password":"nada123","Bills":{}},"2":{"MobileNumber":"01022199451","BankNumber":"105","AccountID":"2","Username":"nada","API":{"APIUrl":"www.bank.com","Name":"QNBAccount"},"Name":"nada","Password":"nada123","Bills":{}},"3":{"MobileNumber":"01022199451","AccountID":"3","Username":"nadaa","API":{"APIUrl":"www.bank.com","Name":"VodafoneCash"},"WalletID":"105","Name":"nada","Password":"nada","Bills":{}},"4":{"MobileNumber":"01022199123","AccountID":"4","Username":"nadaaa","API":{"APIUrl":"www.wallet.com","Name":"Fawry"},"WalletID":"105","Name":"nada","Password":"nada12","Bills":{}}}}
+{"AccountSize":"1",
+  "Accounts": {
+    "1": {
+      "MobileNumber":"01022199451",
+      "BankNumber":"105",
+      "AccountID":"1",
+      "Username":"nadamohamed",
+      "API":{"APIUrl":"www.bank.com","Name":"QNBAccount"},
+      "Name":"nada","Password":"nada123"
+    }
+  }
+}

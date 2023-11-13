@@ -3,8 +3,6 @@ package Authentication;
 import AccountDetails.*;
 import InstaPayManager.DataManager;
 import InstaPayManager.JSON;
-import Transaction.Bill;
-import Transaction.ElectricityBill;
 
 import java.util.*;
 
@@ -42,7 +40,6 @@ public class Authentication {
         String id = Integer.toString(dataManager.getAccounts().size() + 1);
         InstaPayAPI api;
         AccountAPIProvider accApi;
-        List<Bill> bills = new ArrayList<>();
 
         System.out.println("Choose your Account type for the given number: \n1. Bank Account \n2. Mobile Wallet");
         System.out.print(">>");
@@ -111,10 +108,12 @@ public class Authentication {
         username = sc.next();
         String usernameRegex = "^(?=[a-zA-Z0-9._]{8,20}$)(?!.*[_.]{2})[^_.].*[^_.]$";
 
-        // usernameExists(username) || username.matches(usernameRegex)
-        while (usernameExists(username)) {
-            if(usernameExists(username)) System.out.print("This username already exists, try a different one: ");
-//            if(username.matches(usernameRegex)) System.out.print("Invalid username, try a different one: ");
+        // dataManager.retrieveAccount(username) != null || username.matches(usernameRegex)
+        while (dataManager.retrieveAccount(username) != null) {
+            if(dataManager.retrieveAccount(username) != null)
+                System.out.print("This username already exists, try a different one: ");
+//          if(username.matches(usernameRegex))
+//            System.out.print("Invalid username, try a different one: ");
             username = sc.next();
         }
         System.out.print("Create your password: ");
@@ -131,7 +130,6 @@ public class Authentication {
                     name,password,
                     mobileNumber,
                     accApi,
-                    bills,
                     "105"); // edit wallet id
 
         }
@@ -142,7 +140,6 @@ public class Authentication {
                     name,password,
                     mobileNumber,
                     accApi,
-                    bills,
                     "105"); // edit bank number
         }
         dataManager.addAccount(user);
@@ -195,14 +192,14 @@ public class Authentication {
         }
         return null;
     }
-    public boolean usernameExists(String uName) {
-        Vector<Account> accounts = dataManager.getAccounts();
-        if(accounts != null) {
-            for (Account acc : accounts) {
-                if (acc.getUsername().equals(uName))
-                    return true;
-            }
-        }
-        return false;
-    }
+//    public boolean usernameExists(String uName) {
+//        Vector<Account> accounts = dataManager.getAccounts();
+//        if(accounts != null) {
+//            for (Account acc : accounts) {
+//                if (acc.getUsername().equals(uName))
+//                    return true;
+//            }
+//        }
+//        return false;
+//    }
 }

@@ -15,8 +15,8 @@ public class BankAccount extends Account{
         this.bankNumber = bankNumber;
     }
 
-    public BankAccount(String accountID, String username, String name, String password, String mobileNumber, AccountAPIProvider api, List<Bill> bills, String bankNumber) {
-        super(accountID, username, name, password, mobileNumber, api, bills);
+    public BankAccount(String accountID, String username, String name, String password, String mobileNumber, AccountAPIProvider api, String bankNumber) {
+        super(accountID, username, name, password, mobileNumber, api);
         this.bankNumber = bankNumber;
     }
 }
