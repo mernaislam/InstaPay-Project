@@ -15,7 +15,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -56,7 +55,7 @@ public class JSON implements DataManager {
     }
     public JSONObject toJSONObj(PaymentAPIProvider api){
         JSONObject jsonApi = new JSONObject();
-        //        jsonApi.put("Name",api.getName().toString);
+//        jsonApi.put("Name",api.getName().toString);
         jsonApi.put("APIUrl",api.getApiUrl());
         return jsonApi;
     }
@@ -119,23 +118,34 @@ public class JSON implements DataManager {
         }
         saveData();
     }
-    public Bill toBill(JSONObject billJSON) throws java.text.ParseException {
+    public Bill toBill(JSONObject billJSON) {
         Bill bill = new Bill();
-        for(Object keyStr : billJSON.keySet()){
-            bill.setTransactionDate(new SimpleDateFormat("dd/MM/yyyy").parse(billJSON.get("TransactionDate").toString()));
-            bill.setTransactionID(billJSON.get("TransactionID").toString());
-            bill.setAmount(Double.parseDouble(billJSON.get("Amount").toString()));
-            bill.setMobileNumber(billJSON.get("MobileNumber").toString());
-            bill.setApiProvider(InstaPayAPI.valueof(billJSON.get("APIProvider").toString()));
-        }
+        //////////////////////// --> string to date
+//        bill.setTransactionDate(new SimpleDateFormat("dd/MM/yyyy").parse(billJSON.get("TransactionDate").toString()));
+        bill.setTransactionID(billJSON.get("TransactionID").toString());
+        bill.setAmount(Double.parseDouble(billJSON.get("Amount").toString()));
+        bill.setMobileNumber(billJSON.get("MobileNumber").toString());
+//        bill.setApiProvider(toPaymentAPI((JSONObject) billJSON.get("API")));
         return bill;
     }
-    public List<Bill> toListOfBills(JSONObject billsJSON){
+    public List<Bill> toBills(JSONObject billsJSON) {
         List<Bill> bills = new ArrayList<>();
-        for(Object keyStr : billsJSON.keySet()){
-            bills.add(toBill(billsJSON.get(keyStr)));
+        for (Object key : billsJSON.keySet()) {
+            bills.add(toBill((JSONObject) key));
         }
         return bills;
+    }
+    public AccountAPIProvider toAccountAPI(JSONObject apiJSON){
+        AccountAPIProvider api = new AccountAPIProvider();
+        api.setApiUrl(apiJSON.get("APIUrl").toString());
+//        api.setAPIProvider(apiJSON.get("APIProvider").toString());
+        return api;
+    }
+    public PaymentAPIProvider toPaymentAPI(JSONObject apiJSON){
+        PaymentAPIProvider api = new PaymentAPIProvider();
+        api.setApiUrl(apiJSON.get("APIUrl").toString());
+//        api.setAPIProvider(api.valueOf(apiJSON.get("APIProvider").toString());
+        return api;
     }
     public WalletAccount getWalletAccount(JSONObject obj){
         return new WalletAccount(
@@ -143,8 +153,8 @@ public class JSON implements DataManager {
                 (String) obj.get("Name"),
                 (String) obj.get("Password"),
                 (String) obj.get("MobileNumber"),
-//                (AccountAPIProvider) obj.get("API"),
-//                (List<Bill>) obj.get("Bills"),
+//                toAccountAPI((JSONObject) obj.get("API")),
+//                toBills((JSONObject) obj.get("Bills")),
                 (String) obj.get("WalletID"));
     }
     public BankAccount getBankAccount(JSONObject obj){
@@ -153,8 +163,8 @@ public class JSON implements DataManager {
                 (String) obj.get("Name"),
                 (String) obj.get("Password"),
                 (String) obj.get("MobileNumber"),
-//                (AccountAPIProvider) obj.get("API"),
-//                (List<Bill>) obj.get("Bills"),
+//                toAccountAPI((JSONObject) obj.get("API")),
+//                toBills((JSONObject) obj.get("Bills")),
                 (String) obj.get("BankNumber"));
     }
     public Vector<WalletAccount> getWalletAccounts(){
@@ -182,25 +192,44 @@ public class JSON implements DataManager {
         return accounts;
     }
 
-    public boolean checkAuth(Account acc){
-        String uName = acc.getUsername();
-        String password = acc.getPassword();
-        JSONObject accounts = null;
-        if(acc instanceof BankAccount)
-            accounts = (JSONObject) data.get("BankAccounts");
-        else if(acc instanceof WalletAccount)
-            accounts = (JSONObject) data.get("WalletAccounts");
-        if (accounts != null) {
-            for (Object account : accounts.values()) {
+    public boolean checkAuth(String uName, String password){
+        JSONObject bankAccounts = (JSONObject) data.get("BankAccounts");
+        JSONObject walletAccounts = (JSONObject) data.get("WalletAccounts");
+        if (bankAccounts != null) {
+            for (Object account : bankAccounts.values()) {
                 if (((JSONObject) account).get("Username").toString().equals(uName)
                         && ((JSONObject) account).get("Password").toString().equals(password)) {
-                     return true;
+                    return true;
+                }
+            }
+        }
+        if (walletAccounts != null) {
+            for (Object account : walletAccounts.values()) {
+                if (((JSONObject) account).get("Username").toString().equals(uName)
+                        && ((JSONObject) account).get("Password").toString().equals(password)){
+                    return true;
                 }
             }
         }
         return false;
     }
     public boolean userExist(String uName){
+        JSONObject bankAccounts = (JSONObject) data.get("BankAccounts");
+        JSONObject walletAccounts = (JSONObject) data.get("WalletAccounts");
+        if (bankAccounts != null) {
+            for (Object account : bankAccounts.values()) {
+                if (((JSONObject) account).get("Username").toString().equals(uName)) {
+                    return true;
+                }
+            }
+        }
+        if (walletAccounts != null) {
+            for (Object account : walletAccounts.values()) {
+                if (((JSONObject) account).get("Username").toString().equals(uName)) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
     public int bankAccountSize() {
