@@ -1,6 +1,6 @@
 package Transaction;
 
-import Authentication.Authentication;
+import static Authentication.Authentication.loggedInUser;
 
 public class BillAPI extends PaymentAPIProvider {
 
@@ -10,12 +10,12 @@ public class BillAPI extends PaymentAPIProvider {
 
     @Override
     public boolean deductBill(Bill bill) {
-//        double balance = Authentication.user.getApi().incquireBalance();
+//        double balance = loggedInUser.getApi().inquireBalance();
 //        if (bill.getAmount() > balance){
 //            System.out.println("You don't have enough money");
 //            return false;
 //        }
-//        Authentication.user.getApi().withdraw(bill.getAmount());
+//        loggedInUser.getApi().withdraw(bill.getAmount());
         return true;
 
     }

@@ -3,11 +3,9 @@ package Transaction;
 import AccountDetails.Account;
 import AccountDetails.AccountAPIProvider;
 import InstaPayManager.DataManager;
-import Authentication.*;
-
 import java.time.LocalDate;
 import java.util.Scanner;
-
+import static Authentication.Authentication.loggedInUser;
 public class TransactionManager {
     private DataManager DM;
 
@@ -24,19 +22,19 @@ public class TransactionManager {
             case "1" -> {
                 int id = (int) (Math.random() * Math.random());
                 Bill bill = new WaterBill(LocalDate.now(), Integer.toString(id),
-                        Authentication.user.getMobileNumber(),new BillAPI(BillType.WATER_BILL,"dummy"));
+                        loggedInUser.getMobileNumber(),new BillAPI(BillType.WATER_BILL,"dummy"));
                 payBill(bill);
             }
             case "2" -> {
                 int id = (int) (Math.random() * Math.random());
                 Bill bill = new WaterBill(LocalDate.now(), Integer.toString(id),
-                        Authentication.user.getMobileNumber(),new BillAPI(BillType.GAS_BILL,"dummy"));
+                        loggedInUser.getMobileNumber(),new BillAPI(BillType.GAS_BILL,"dummy"));
                 payBill(bill);
             }
             case "3" -> {
                 int id = (int) (Math.random() * Math.random());
                 Bill bill = new WaterBill(LocalDate.now(), Integer.toString(id),
-                        Authentication.user.getMobileNumber(),new BillAPI(BillType.ELECTRICITY_BILL,"dummy"));
+                        loggedInUser.getMobileNumber(),new BillAPI(BillType.ELECTRICITY_BILL,"dummy"));
                 payBill(bill);
             }
             case "4" -> {
@@ -96,11 +94,11 @@ public class TransactionManager {
                 transferToWallet();
             }
         }
-        //Check if phone number exists in the company's data base
-        // if not return false and print wallet doesnt exist
+        //Check if phone number exists in the company's database
+        // if not return false and print wallet doesn't exist
 
         // to be fixed when AccountAPI constructor is made
-        // AccountAPIProvider receiverApi = new AccountAPIProvider();
+//         AccountAPIProvider receiverApi = new AccountAPIProvider();
 //        System.out.println("Your current balance: " + AccountAPIProvider.inquireBalance());
         System.out.print("Amount to be transferred: ");
         double amount = sc.nextDouble();
@@ -108,7 +106,7 @@ public class TransactionManager {
 //            System.out.println("You don't have enough money");
 //            return false;
 //        }
-//        Authentication.user.getApi().withdraw(amount);
+//        loggedInUser.getApi().withdraw(amount);
 //        receiverApi.deposit(amount);
         return true;
     }
@@ -117,17 +115,17 @@ public class TransactionManager {
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter the account name you wish to send to: ");
         String accName = sc.nextLine();
-        //hcheck el database law fe account be accName da
-        //law la2 return false wa print acc doesnt exist
+        //check el database law fe account be accName da
+        //law la2 return false wa print acc doesn't exist
         //create instance bel receiver account
         System.out.print("Amount to be transferred: ");
         double amount = sc.nextDouble();
-//        double balance = Authentication.user.getApi().incquireBalance();
+//        double balance = loggedInUser.getApi().inquireBalance();
 //        if (amount > balance){
 //            System.out.println("You don't have enough money");
 //            return false;
 //        }
-//        Authentication.user.getApi().withdraw(amount);
+//        loggedInUser.getApi().withdraw(amount);
 //         receiver.getApi().deposit(amount);
         return true;
     }
@@ -143,12 +141,12 @@ public class TransactionManager {
         // create instance of receiving account
         System.out.print("Amount to be transferred: ");
         double amount = sc.nextDouble();
-//        double balance = Authentication.user.getApi().incquireBalance();
+//        double balance = loggedInUser.getApi().inquireBalance();
 //        if (amount > balance){
 //            System.out.println("You don't have enough money");
 //            return false;
 //        }
-//        Authentication.user.getApi().withdraw(amount);
+//        loggedInUser.getApi().withdraw(amount);
 //         receiver.getApi().deposit(amount);
         return true;
     }
