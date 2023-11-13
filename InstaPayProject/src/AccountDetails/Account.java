@@ -4,19 +4,13 @@ import Transaction.Bill;
 
 import java.util.List;
 
-public class Account {
+public abstract class Account {
     private String username;
+    private String accountID;
+
     private String name;
     private String password;
     private String mobileNumber;
-
-    public Account(){}
-    public Account(String username, String name, String password, String mobileNumber) {
-        this.username = username;
-        this.name = name;
-        this.password = password;
-        this.mobileNumber = mobileNumber;
-    }
     private AccountAPIProvider api;
     private List<Bill> bills;
 
@@ -55,5 +49,23 @@ public class Account {
     }
     public List<Bill> getBills() {
         return bills;
+    }
+
+    public String getAccountID() {
+        return accountID;
+    }
+
+    public void setAccountID(String accountID) {
+        this.accountID = accountID;
+    }
+
+    public Account(String accountID, String username, String name, String password, String mobileNumber, AccountAPIProvider api, List<Bill> bills) {
+        this.accountID = accountID;
+        this.username = username;
+        this.name = name;
+        this.password = password;
+        this.mobileNumber = mobileNumber;
+        this.api = api;
+        this.bills = bills;
     }
 }

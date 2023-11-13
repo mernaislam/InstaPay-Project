@@ -10,7 +10,7 @@ public interface DataManager {
 
     public void loadData();
     public void saveData();
-    public Vector<WalletAccount> getWalletAccounts();
-    public Vector<BankAccount> getBankAccounts();
+    public Vector<Account> getAccounts();
     public void addAccount(Account acc);
+    public Account retrieveAccount(String username);
 }

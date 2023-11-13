@@ -62,7 +62,7 @@ public class TransactionManager {
             }
         }
 //lma el constructor yt3ml
-        AccountAPIProvider receiverApi = new AccountAPIProvider();
+//        AccountAPIProvider receiverApi = new AccountAPIProvider();
 //        System.out.println("Your current balance: " + AccountAPIProvider.inquireBalance());
         System.out.print("Amount to be transferred: ");
         double amount = sc.nextDouble();

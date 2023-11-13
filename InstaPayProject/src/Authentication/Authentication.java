@@ -1,35 +1,43 @@
 package Authentication;
 
-import AccountDetails.Account;
+import AccountDetails.*;
 import InstaPayManager.DataManager;
-import InstaPayManager.GUIManager;
+import InstaPayManager.JSON;
+import Transaction.Bill;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class Authentication {
      public static Account user;
      OTPManager otpManager;
      DataManager dataManager;
 
+    public Authentication() {
+        this.otpManager = new OTPManager();
+        this.dataManager = new JSON();
+    }
+
     public void register(){
-        Map<Integer, String> bankAccountsMap = new HashMap<>(){
+        Map<Integer, InstaPayAPI> bankAccountsMap = new HashMap<>(){
             {
-                put(1, "CIB");
-                put(2, "QNB");
-                put(3, "Bank Misr");
+                put(1, InstaPayAPI.CIBAccount);
+                put(2, InstaPayAPI.QNBAccount);
+                put(3, InstaPayAPI.BankMisrAccount);
             }
         };
-        Map<Integer, String> walletsMap = new HashMap<>(){
+        Map<Integer, InstaPayAPI> walletsMap = new HashMap<>(){
             {
-                put(1, "Vodafone Cash");
-                put(2, "Fawry");
+                put(1,InstaPayAPI.VodafoneCash);
+                put(2,InstaPayAPI.Fawry);
             }
         };
         Scanner sc = new Scanner(System.in);
         String name, mobileNumber, username, password;
         int accountChoice, bankChoice, walletChoice;
+        String id = Integer.toString(dataManager.getAccounts().size() + 1);
+        InstaPayAPI api;
+        AccountAPIProvider accApi;
+        List<Bill> bills = new ArrayList<>();
 
         System.out.println("Choose your Account type for the given number: \n1. Bank Account \n2. Mobile Wallet");
         accountChoice = sc.nextInt();
@@ -40,13 +48,14 @@ public class Authentication {
         if (accountChoice == 1) {
             System.out.println("Choose your Bank:");
             for (int i = 1; i <= bankAccountsMap.size(); i++) {
-                System.out.println(i + ". " + bankAccountsMap.get(i));
+                System.out.println(i + ". " + bankAccountsMap.get(i).toString());
             }
             bankChoice = sc.nextInt();
             while (!bankAccountsMap.containsKey(bankChoice)) {
                 System.out.println("Invalid number, please try again: ");
                 bankChoice = sc.nextInt();
             }
+            api = bankAccountsMap.get(bankChoice);
             System.out.println("Enter your mobile number [Must be registered at this bank account]");
             mobileNumber = sc.next();
             String mobRegex = "^01[0-2,5]{1}[0-9]{8}$";
@@ -55,6 +64,8 @@ public class Authentication {
                 mobileNumber = sc.next();
             }
             //  ------------------------ verify it is registered in the bank
+            accApi = new BankAPI(api, "www.bank.com");
+
 
             int otp = otpManager.getOTP(mobileNumber);
             System.out.println("Your otp is: " + otp);
@@ -69,6 +80,7 @@ public class Authentication {
                 System.out.println("Invalid number, please try again: ");
                 walletChoice = sc.nextInt();
             }
+            api = walletsMap.get(walletChoice);
             System.out.println("Please enter your mobile number [Must be registered at this wallet account]");
             mobileNumber = sc.next();
             String mobRegex = "^01[0-2,5]{1}[0-9]{8}$";
@@ -77,6 +89,7 @@ public class Authentication {
                 mobileNumber = sc.next();
             }
             // ------------------------ verify it is registered in the wallet
+            accApi = new WalletAPI(api, "www.bank.com");
 
             int otp = otpManager.getOTP(mobileNumber);
             System.out.println("Your otp is: " + otp);
@@ -87,22 +100,41 @@ public class Authentication {
         System.out.print("Create your username: ");
         username = sc.next();
         String usernameRegex = "^(?=[a-zA-Z0-9._]{8,20}$)(?!.*[_.]{2})[^_.].*[^_.]$";
-        while (usernameExists(username) || username.matches(usernameRegex)) {
+
+        // usernameExists(username) || username.matches(usernameRegex)
+        while (usernameExists(username)) {
             if(usernameExists(username)) System.out.print("This username already exists, try a different one: ");
-            if(username.matches(usernameRegex)) System.out.print("Invalid username, try a different one: ");
+//            if(username.matches(usernameRegex)) System.out.print("Invalid username, try a different one: ");
             username = sc.next();
         }
         System.out.print("Create your password: ");
         password = sc.next();
-        String passRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,10}$";
-        while (!password.matches(passRegex)) {
-            System.out.print("Must include a strong password, try again: ");
-            password = sc.next();
+//        String passRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,10}$";
+//        while (!password.matches(passRegex)) {
+//            System.out.print("Must include a strong password, try again: ");
+//            password = sc.next();
+//        }
+        if(accApi instanceof WalletAPI){
+            user = new WalletAccount(
+                    id,
+                    username,
+                    name,password,
+                    mobileNumber,
+                    accApi,
+                    bills,
+                    "105"); // edit wallet id
+
         }
-        user.setName(name);
-        user.setMobileNumber(mobileNumber);
-        user.setUsername(username);
-        user.setPassword(password);
+        else{
+            user = new BankAccount(
+                    id,
+                    username,
+                    name,password,
+                    mobileNumber,
+                    accApi,
+                    bills,
+                    "105"); // edit bank number
+        }
         dataManager.addAccount(user);
         System.out.println("Your account has been created successfully!");
     }
@@ -135,16 +167,28 @@ public class Authentication {
         return true;
     }
 
-    public boolean checkAccount(String username, String password){
-        //  ------------------------ checks in dataManager
-        return true;
+    public void logout(){
+
     }
 
-    public void logout(){}
-
-    public boolean usernameExists(String username){
-        //  ------------------------ checks in dataManager
+    public boolean checkAccount(String uName, String password){
+        Vector<Account> accounts = dataManager.getAccounts();
+        if(accounts != null) {
+            for (Account acc : accounts) {
+                if (acc.getUsername().equals(uName) && acc.getPassword().equals(password))
+                    return true;
+            }
+        }
         return false;
     }
-
+    public boolean usernameExists(String uName) {
+        Vector<Account> accounts = dataManager.getAccounts();
+        if(accounts != null) {
+            for (Account acc : accounts) {
+                if (acc.getUsername().equals(uName))
+                    return true;
+            }
+        }
+        return false;
+    }
 }
