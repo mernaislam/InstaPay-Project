@@ -8,7 +8,7 @@ import Transaction.Bill;
 import java.util.*;
 
 public class Authentication {
-     public static Account user;
+     public static Account loggedInUser;
      OTPManager otpManager;
      DataManager dataManager;
 
@@ -16,8 +16,12 @@ public class Authentication {
         this.otpManager = new OTPManager();
         this.dataManager = new JSON();
     }
+    void setLoggedInUser(Account acc) {
+        loggedInUser = acc;
+    }
 
     public void register(){
+        Account user;
         Map<Integer, InstaPayAPI> bankAccountsMap = new HashMap<>(){
             {
                 put(1, InstaPayAPI.CIBAccount);
@@ -89,7 +93,7 @@ public class Authentication {
                 mobileNumber = sc.next();
             }
             // ------------------------ verify it is registered in the wallet
-            accApi = new WalletAPI(api, "www.bank.com");
+            accApi = new WalletAPI(api, "www.wallet.com");
 
             int otp = otpManager.getOTP(mobileNumber);
             System.out.println("Your otp is: " + otp);
@@ -148,7 +152,8 @@ public class Authentication {
         password = sc.next();
         int cnt = 1;
         boolean invalid = false;
-        while (!checkAccount(username, password)) {
+        Account acc;
+        while (checkAccount(username, password) == null) {
             if (cnt == 3) {
                 invalid = true;
                 break;
@@ -164,22 +169,25 @@ public class Authentication {
             System.out.println("Returning to main menu ...");
             return false;
         }
+        acc = checkAccount(username, password);
+        setLoggedInUser(acc);
         return true;
     }
 
     public void logout(){
-
+        loggedInUser = null;
+        System.out.println("Logged out successfully!");
     }
 
-    public boolean checkAccount(String uName, String password){
+    public Account checkAccount(String uName, String password){
         Vector<Account> accounts = dataManager.getAccounts();
         if(accounts != null) {
             for (Account acc : accounts) {
                 if (acc.getUsername().equals(uName) && acc.getPassword().equals(password))
-                    return true;
+                    return acc;
             }
         }
-        return false;
+        return null;
     }
     public boolean usernameExists(String uName) {
         Vector<Account> accounts = dataManager.getAccounts();

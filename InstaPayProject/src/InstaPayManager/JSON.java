@@ -185,7 +185,7 @@ public class JSON implements DataManager {
             e.printStackTrace();
         }
     }
-    // add account
+    // add account & retrieve account
     public void addAccount(Account acc){
         if (data.get("Accounts") == null) {
             data.put("Accounts", new JSONObject());
