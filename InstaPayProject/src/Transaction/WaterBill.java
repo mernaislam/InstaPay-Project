@@ -1,11 +1,12 @@
 package Transaction;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class WaterBill extends Bill{
     private double waterConsumed;
 
-    public WaterBill(Date d, String id, String mobile, PaymentAPIProvider api) {
+    public WaterBill(LocalDate d, String id, String mobile, PaymentAPIProvider api) {
         super(d, id, mobile, api);
         this.waterConsumed = Math.random() * 100;
         this.cost = waterConsumed * 0.10;

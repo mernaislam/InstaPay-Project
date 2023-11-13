@@ -1,16 +1,17 @@
 package Transaction;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public abstract class Bill {
-    protected Date transactionDate;
+    protected LocalDate transactionDate;
     protected String transactionID;
     protected double cost;
     protected double total;
     protected String mobileNumber;
     protected PaymentAPIProvider apiProvider;
 
-    public Bill(Date d, String id, String mobile, PaymentAPIProvider api) {
+    public Bill(LocalDate d, String id, double amount, String mobile, PaymentAPIProvider api){
         this.transactionDate = d;
         this.transactionID = id;
         this.mobileNumber = mobile;
@@ -19,11 +20,11 @@ public abstract class Bill {
 
     public abstract void displayBillDetails();
 
-    public Date getTransactionDate() {
+    public LocalDate getTransactionDate() {
         return transactionDate;
     }
 
-    public void setTransactionDate(Date d) {
+    public void setTransactionDate(LocalDate d) {
         this.transactionDate = d;
     }
 

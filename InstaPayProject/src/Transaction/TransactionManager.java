@@ -65,7 +65,7 @@ public class TransactionManager {
         // if not return false and print wallet doesnt exist
 
         // to be fixed when AccountAPI constructor is made
-        AccountAPIProvider receiverApi = new AccountAPIProvider();
+        // AccountAPIProvider receiverApi = new AccountAPIProvider();
 //        System.out.println("Your current balance: " + AccountAPIProvider.inquireBalance());
         System.out.print("Amount to be transferred: ");
         double amount = sc.nextDouble();

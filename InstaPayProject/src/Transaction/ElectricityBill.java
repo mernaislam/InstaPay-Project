@@ -1,11 +1,12 @@
 package Transaction;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class ElectricityBill extends Bill{
     private double electricityConsumed;
 
-    public ElectricityBill(Date d, String id, String mobile, PaymentAPIProvider api) {
+    public ElectricityBill(LocalDate d, String id, String mobile, PaymentAPIProvider api) {
         super(d, id, mobile, api);
         this.electricityConsumed = Math.random() * 100;
         this.cost = electricityConsumed * 0.20;

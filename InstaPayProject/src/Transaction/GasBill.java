@@ -1,11 +1,12 @@
 package Transaction;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class GasBill extends Bill {
     private double gasConsumed;
 
-    public GasBill(Date d, String id, String mobile, PaymentAPIProvider api) {
+    public GasBill(LocalDate d, String id, String mobile, PaymentAPIProvider api) {
         super(d, id, mobile, api);
         this.gasConsumed = Math.random() * 100.00;
         this.cost = gasConsumed * 0.15;
