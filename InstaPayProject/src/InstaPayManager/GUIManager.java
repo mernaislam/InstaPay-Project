@@ -19,26 +19,33 @@ public class GUIManager {
         this.auth = new Authentication();
         this.TM = new TransactionManager(this.DM);
     }
-    public void run(){
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Welcome to InstaPay: \n1. Sign in \n2. Sign up \n3. Exit");
-        int choice;
-        choice = sc.nextInt();
-        switch (choice) {
-            case 1 -> { // login
-                if(!auth.login()){
-                    run();
-                }
-                // ------------------------- display options based on account type
-            }
-            case 2 -> { // sign up
-                auth.register();
-                // ------------------------- display options based on account type
-            }
-            case 3 -> System.out.println("Thank you for using the app!");
-            default -> {
-                System.out.println("Incorrect number, please try again [1-3]");
-                run();
+    public void run() {
+        System.out.println("Welcome to InstaPay :)");
+        System.out.println("-------------------------------------------");
+        Scanner scan = new Scanner(System.in);
+        while (true) {
+            String options = """ 
+                    Please choose one of the following options:
+                    1. Register
+                    2. Login
+                    3. Exit
+                    """;
+            System.out.print(options);
+            System.out.print(">>");
+            String choice = scan.nextLine();
+            switch (choice) {
+                case "1":
+                    auth.register();
+                    break;
+                case "2":
+                    if(auth.login())
+                        displayOptions();
+                    break;
+                case "3":
+                    System.out.println("Thank you for using the app!");
+                    System.exit(0);
+                default:
+                    System.out.println("Incorrect number, please try again [1-3]");
             }
         }
     }
@@ -53,9 +60,9 @@ public class GUIManager {
                         4. Pay Bills
                         5. Inquire Balance
                         6. Logout
-                        7. Return back
                         """;
-            System.out.println(options);
+            System.out.print(options);
+            System.out.print(">>");
             String choice = scan.nextLine();
             switch (choice){
                 case "1":
@@ -76,10 +83,8 @@ public class GUIManager {
                 case "6":
                     auth.logout();
                     break;
-                case "7":
-                    return;
                 default:
-                    System.out.println("Incorrect number, please try again [1-7]");
+                    System.out.println("Incorrect number, please try again [1-6]");
                     break;
             }
         }
@@ -92,9 +97,9 @@ public class GUIManager {
                         3. Pay Bills
                         4. Inquire Balance
                         5. Logout
-                        6. Return back
                         """;
-            System.out.println(options);
+            System.out.print(options);
+            System.out.print(">>");
             String choice = scan.nextLine();
             switch (choice){
                 case "1":
@@ -112,10 +117,8 @@ public class GUIManager {
                 case "5":
                     auth.logout();
                     break;
-                case "6":
-                    return;
                 default:
-                    System.out.println("Incorrect number, please try again [1-6]");
+                    System.out.println("Incorrect number, please try again [1-5]");
                     break;
             }
         }

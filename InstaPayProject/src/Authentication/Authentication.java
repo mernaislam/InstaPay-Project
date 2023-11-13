@@ -4,6 +4,7 @@ import AccountDetails.*;
 import InstaPayManager.DataManager;
 import InstaPayManager.JSON;
 import Transaction.Bill;
+import Transaction.ElectricityBill;
 
 import java.util.*;
 
@@ -44,6 +45,7 @@ public class Authentication {
         List<Bill> bills = new ArrayList<>();
 
         System.out.println("Choose your Account type for the given number: \n1. Bank Account \n2. Mobile Wallet");
+        System.out.print(">>");
         accountChoice = sc.nextInt();
         while (accountChoice != 1 && accountChoice != 2) {
             System.out.print("Invalid number, please try again: ");
@@ -54,6 +56,7 @@ public class Authentication {
             for (int i = 1; i <= bankAccountsMap.size(); i++) {
                 System.out.println(i + ". " + bankAccountsMap.get(i).toString());
             }
+            System.out.print(">>");
             bankChoice = sc.nextInt();
             while (!bankAccountsMap.containsKey(bankChoice)) {
                 System.out.println("Invalid number, please try again: ");
@@ -61,6 +64,7 @@ public class Authentication {
             }
             api = bankAccountsMap.get(bankChoice);
             System.out.println("Enter your mobile number [Must be registered at this bank account]");
+            System.out.print(">>");
             mobileNumber = sc.next();
             String mobRegex = "^01[0-2,5]{1}[0-9]{8}$";
             while (!mobileNumber.matches(mobRegex)) {
@@ -79,6 +83,7 @@ public class Authentication {
             for (int i = 1; i <= walletsMap.size(); i++) {
                 System.out.println(i + ". " + walletsMap.get(i));
             }
+            System.out.print(">>");
             walletChoice = sc.nextInt();
             while (!walletsMap.containsKey(walletChoice)) {
                 System.out.println("Invalid number, please try again: ");
@@ -86,6 +91,7 @@ public class Authentication {
             }
             api = walletsMap.get(walletChoice);
             System.out.println("Please enter your mobile number [Must be registered at this wallet account]");
+            System.out.print(">>");
             mobileNumber = sc.next();
             String mobRegex = "^01[0-2,5]{1}[0-9]{8}$";
             while (!mobileNumber.matches(mobRegex)) {
