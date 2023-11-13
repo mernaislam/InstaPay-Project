@@ -147,7 +147,7 @@ public class Authentication {
     public boolean login(){
         Scanner sc = new Scanner(System.in);
         String username, password;
-        System.out.println("Please enter your credentials");
+        System.out.println("Please enter your credentials:");
         System.out.print("Username: ");
         username = sc.next();
         System.out.print("Password: ");
@@ -160,7 +160,7 @@ public class Authentication {
                 invalid = true;
                 break;
             }
-            System.out.println("Incorrect username or password, please try again");
+            System.out.println("Incorrect username or password, please try again!");
             System.out.print("Username: ");
             username = sc.next();
             System.out.print("Password: ");
@@ -168,7 +168,7 @@ public class Authentication {
             cnt++;
         }
         if (invalid) {
-            System.out.println("Returning to main menu ...");
+            System.out.println("You've reached maximum login attempts, returning to main menu...");
             return false;
         }
         acc = checkAccount(username, password);

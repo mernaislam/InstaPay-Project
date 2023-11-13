@@ -89,7 +89,7 @@ public class GUIManager {
                         System.out.println("Thank you for using the app!");
                         System.exit(0);
                     default:
-                        System.out.println("Incorrect number, please try again [1-7]");
+                        System.out.println("Incorrect number, please try again & choose a number between [1-7]");
                         break;
                 }
             } else if (loggedInUser instanceof WalletAccount) {
