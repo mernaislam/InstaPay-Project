@@ -4,15 +4,50 @@ import AccountDetails.Account;
 import AccountDetails.AccountAPIProvider;
 import InstaPayManager.DataManager;
 import Authentication.*;
+
+import java.time.LocalDate;
 import java.util.Scanner;
 
 public class TransactionManager {
     private DataManager DM;
 
-    public TransactionManager(DataManager dm){
+    public TransactionManager(DataManager dm) {
         this.DM = dm;
     }
 
+    public void chooseBill() {
+        System.out.println("Choose which bill you want to pay:\n1-Water bill \t 2-Gas Bill \t 3-Electricity Bill \t 4-Back");
+        Scanner sc = new Scanner(System.in);
+        String choice;
+        choice = sc.next();
+        switch (choice) {
+            case "1" -> {
+                int id = (int) (Math.random() * Math.random());
+                Bill bill = new WaterBill(LocalDate.now(), Integer.toString(id),
+                        Authentication.user.getMobileNumber(),new BillAPI(BillType.WATER_BILL,"dummy"));
+                payBill(bill);
+            }
+            case "2" -> {
+                int id = (int) (Math.random() * Math.random());
+                Bill bill = new WaterBill(LocalDate.now(), Integer.toString(id),
+                        Authentication.user.getMobileNumber(),new BillAPI(BillType.GAS_BILL,"dummy"));
+                payBill(bill);
+            }
+            case "3" -> {
+                int id = (int) (Math.random() * Math.random());
+                Bill bill = new WaterBill(LocalDate.now(), Integer.toString(id),
+                        Authentication.user.getMobileNumber(),new BillAPI(BillType.ELECTRICITY_BILL,"dummy"));
+                payBill(bill);
+            }
+            case "4" -> {
+                return;
+            }
+            default -> {
+                System.out.println("Incorrect number, please try again [1-4]");
+                chooseBill();
+            }
+        }
+    }
 
     public void payBill(Bill bill) {
         //displaying the bill details
@@ -34,7 +69,7 @@ public class TransactionManager {
                 System.out.println("Bill payment canceled");
             }
             default -> {
-                System.out.println("Incorrect number, please try again [1-3]");
+                System.out.println("Incorrect number, please try again [1-2]");
                 payBill(bill);
             }
         }
@@ -57,7 +92,7 @@ public class TransactionManager {
                 company = "Fawry";
             }
             default -> {
-                System.out.println("Incorrect number, please try again [1-3]");
+                System.out.println("Incorrect number, please try again [1-2]");
                 transferToWallet();
             }
         }
@@ -75,7 +110,7 @@ public class TransactionManager {
 //        }
 //        Authentication.user.getApi().withdraw(amount);
 //        receiverApi.deposit(amount);
-            return true;
+        return true;
     }
 
     public boolean transferToAccount() {
