@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class Authentication {
-     public Account user;
+     public static Account user;
      OTPManager otpManager;
      DataManager dataManager;
 
