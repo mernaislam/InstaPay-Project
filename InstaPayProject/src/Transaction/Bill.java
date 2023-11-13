@@ -11,7 +11,7 @@ public abstract class Bill {
     protected String mobileNumber;
     protected PaymentAPIProvider apiProvider;
 
-    public Bill(LocalDate d, String id, double amount, String mobile, PaymentAPIProvider api){
+    public Bill(LocalDate d, String id, String mobile, PaymentAPIProvider api){
         this.transactionDate = d;
         this.transactionID = id;
         this.mobileNumber = mobile;

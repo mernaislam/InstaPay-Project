@@ -82,7 +82,6 @@ public class JSON implements DataManager {
         return new ElectricityBill(
                 LocalDate.parse(billJSON.get("TransactionDate").toString()),
                 billJSON.get("TransactionID").toString(),
-                Double.parseDouble(billJSON.get("Amount").toString()),
                 billJSON.get("MobileNumber").toString(),
                 toBillAPI((JSONObject) billJSON.get("API"))
         );
@@ -91,7 +90,6 @@ public class JSON implements DataManager {
         return new WaterBill(
                 LocalDate.parse(billJSON.get("TransactionDate").toString()),
                 billJSON.get("TransactionID").toString(),
-                Double.parseDouble(billJSON.get("Amount").toString()),
                 billJSON.get("MobileNumber").toString(),
                 toBillAPI((JSONObject) billJSON.get("API"))
         );
@@ -100,7 +98,6 @@ public class JSON implements DataManager {
         return new GasBill(
                 LocalDate.parse(billJSON.get("TransactionDate").toString()),
                 billJSON.get("TransactionID").toString(),
-                Double.parseDouble(billJSON.get("Amount").toString()),
                 billJSON.get("MobileNumber").toString(),
                 toBillAPI((JSONObject) billJSON.get("API"))
         );
