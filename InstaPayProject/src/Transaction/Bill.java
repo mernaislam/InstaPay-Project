@@ -5,14 +5,14 @@ import java.util.Date;
 public abstract class Bill {
     protected Date transactionDate;
     protected String transactionID;
-    protected double amount;
+    protected double cost;
+    protected double total;
     protected String mobileNumber;
     protected PaymentAPIProvider apiProvider;
 
-    public Bill(Date d, String id, double amount, String mobile, PaymentAPIProvider api){
+    public Bill(Date d, String id, String mobile, PaymentAPIProvider api) {
         this.transactionDate = d;
         this.transactionID = id;
-        this.amount = amount;
         this.mobileNumber = mobile;
         this.apiProvider = api;
     }
@@ -35,12 +35,20 @@ public abstract class Bill {
         this.transactionID = id;
     }
 
-    public double getAmount() {
-        return amount;
+    public double getCost() {
+        return cost;
     }
 
-    public void setAmount(double amount) {
-        this.amount = amount;
+    public void setCost(double cost) {
+        this.cost = cost;
+    }
+
+    public double getTotal() {
+        return total;
+    }
+
+    public void setTotal(double amount) {
+        this.total = amount;
     }
 
     public String getMobileNumber() {
