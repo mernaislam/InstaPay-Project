@@ -108,21 +108,20 @@ public class Authentication {
         username = sc.next();
         String usernameRegex = "^(?=[a-zA-Z0-9._]{8,20}$)(?!.*[_.]{2})[^_.].*[^_.]$";
 
-        // dataManager.retrieveAccount(username) != null || username.matches(usernameRegex)
-        while (dataManager.retrieveAccount(username) != null) {
+        while (dataManager.retrieveAccount(username) != null || username.matches(usernameRegex)) {
             if(dataManager.retrieveAccount(username) != null)
                 System.out.print("This username already exists, try a different one: ");
-//          if(username.matches(usernameRegex))
-//            System.out.print("Invalid username, try a different one: ");
+          if(username.matches(usernameRegex))
+            System.out.print("Invalid username, try a different one: ");
             username = sc.next();
         }
         System.out.print("Create your password: ");
         password = sc.next();
-//        String passRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,10}$";
-//        while (!password.matches(passRegex)) {
-//            System.out.print("Must include a strong password, try again: ");
-//            password = sc.next();
-//        }
+        String passRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,10}$";
+        while (!password.matches(passRegex)) {
+            System.out.print("Must include a strong password, try again: ");
+            password = sc.next();
+        }
         if(accApi instanceof WalletAPI){
             user = new WalletAccount(
                     id,
