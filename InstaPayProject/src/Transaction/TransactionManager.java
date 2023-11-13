@@ -20,20 +20,20 @@ public class TransactionManager {
         choice = sc.next();
         switch (choice) {
             case "1" -> {
-                int id = (int) (Math.random() * Math.random());
+                int id = (int) (Math.random() * 1000000);
                 Bill bill = new WaterBill(LocalDate.now(), Integer.toString(id),
                         loggedInUser.getMobileNumber(),new BillAPI(BillType.WATER_BILL,"dummy"));
                 payBill(bill);
             }
             case "2" -> {
-                int id = (int) (Math.random() * Math.random());
-                Bill bill = new WaterBill(LocalDate.now(), Integer.toString(id),
+                int id = (int) (Math.random() * 1000000);
+                Bill bill = new GasBill(LocalDate.now(), Integer.toString(id),
                         loggedInUser.getMobileNumber(),new BillAPI(BillType.GAS_BILL,"dummy"));
                 payBill(bill);
             }
             case "3" -> {
-                int id = (int) (Math.random() * Math.random());
-                Bill bill = new WaterBill(LocalDate.now(), Integer.toString(id),
+                int id = (int) (Math.random() * 1000000);
+                Bill bill = new ElectricityBill(LocalDate.now(), Integer.toString(id),
                         loggedInUser.getMobileNumber(),new BillAPI(BillType.ELECTRICITY_BILL,"dummy"));
                 payBill(bill);
             }

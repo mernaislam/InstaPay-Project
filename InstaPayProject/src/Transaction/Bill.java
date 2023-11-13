@@ -7,6 +7,7 @@ public abstract class Bill {
     protected LocalDate transactionDate;
     protected String transactionID;
     protected double cost;
+    protected double tax;
     protected double total;
     protected String mobileNumber;
     protected PaymentAPIProvider apiProvider;
