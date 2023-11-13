@@ -1,5 +1,6 @@
 package Transaction;
 
+import AccountDetails.Account;
 import AccountDetails.AccountAPIProvider;
 import InstaPayManager.DataManager;
 import Authentication.*;
@@ -37,7 +38,6 @@ public class TransactionManager {
                 payBill(bill);
             }
         }
-        return;
     }
 
     public boolean transferToWallet() {
@@ -61,13 +61,16 @@ public class TransactionManager {
                 transferToWallet();
             }
         }
-//lma el constructor yt3ml
+        //Check if phone number exists in the company's data base
+        // if not return false and print wallet doesnt exist
+
+        // to be fixed when AccountAPI constructor is made
         AccountAPIProvider receiverApi = new AccountAPIProvider();
 //        System.out.println("Your current balance: " + AccountAPIProvider.inquireBalance());
         System.out.print("Amount to be transferred: ");
         double amount = sc.nextDouble();
 //        if (AccountAPIProvider.inquireBalance() < amount){
-//            System.out.println("Amount is more than your current balance.");
+//            System.out.println("You don't have enough money");
 //            return false;
 //        }
 //        Authentication.user.getApi().withdraw(amount);
@@ -76,10 +79,42 @@ public class TransactionManager {
     }
 
     public boolean transferToAccount() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter the account name you wish to send to: ");
+        String accName = sc.nextLine();
+        //hcheck el database law fe account be accName da
+        //law la2 return false wa print acc doesnt exist
+        //create instance bel receiver account
+        System.out.print("Amount to be transferred: ");
+        double amount = sc.nextDouble();
+//        double balance = Authentication.user.getApi().incquireBalance();
+//        if (amount > balance){
+//            System.out.println("You don't have enough money");
+//            return false;
+//        }
+//        Authentication.user.getApi().withdraw(amount);
+//         receiver.getApi().deposit(amount);
         return true;
     }
 
     public boolean transferToBank() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter the account name you wish to send to: ");
+        String accName = sc.nextLine();
+        System.out.println("Enter the bank number you wish to send to: ");
+        String bankNum = sc.next();
+        // check if accName exists with this bankNum
+        // if not return false and print unable to transfer to unregistered bank account
+        // create instance of receiving account
+        System.out.print("Amount to be transferred: ");
+        double amount = sc.nextDouble();
+//        double balance = Authentication.user.getApi().incquireBalance();
+//        if (amount > balance){
+//            System.out.println("You don't have enough money");
+//            return false;
+//        }
+//        Authentication.user.getApi().withdraw(amount);
+//         receiver.getApi().deposit(amount);
         return true;
     }
 }
