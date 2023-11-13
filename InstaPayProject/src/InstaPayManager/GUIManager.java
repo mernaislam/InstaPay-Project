@@ -45,7 +45,7 @@ public class GUIManager {
                     System.out.println("Thank you for using the app!");
                     System.exit(0);
                 default:
-                    System.out.println("Incorrect number, please try again [1-3]");
+                    System.out.println("Incorrect number, please try again & choose a number between [1-3]");
             }
         }
     }
@@ -101,6 +101,7 @@ public class GUIManager {
                         3. Pay Bills
                         4. Inquire Balance
                         5. Logout
+                        6. Exit
                         """;
                 System.out.print(options);
                 System.out.print(">>");
@@ -125,7 +126,7 @@ public class GUIManager {
                         System.out.println("Thank you for using the app!");
                         System.exit(0);
                     default:
-                        System.out.println("Incorrect number, please try again [1-6]");
+                        System.out.println("Incorrect number, please try again & choose a number between [1-6]");
                         break;
                 }
             }

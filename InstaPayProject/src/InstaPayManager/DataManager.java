@@ -1,8 +1,6 @@
 package InstaPayManager;
 
 import AccountDetails.Account;
-import AccountDetails.BankAccount;
-import AccountDetails.WalletAccount;
 
 import java.util.Vector;
 
