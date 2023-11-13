@@ -54,7 +54,7 @@ public class JSON implements DataManager {
         JSONObject jsonBill = new JSONObject();
         jsonBill.put("TransactionDate", bill.getTransactionDate().toString());
         jsonBill.put("TransactionID", bill.getTransactionID());
-        jsonBill.put("Amount", bill.getAmount());
+        jsonBill.put("Total", bill.getTotal());
         jsonBill.put("MobileNumber", bill.getMobileNumber());
         jsonBill.put("APIProvider", toJSONObj(bill.getApiProvider()));
         return jsonBill;
