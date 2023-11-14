@@ -21,24 +21,25 @@ public class Authentication {
 
     public void register(){
         Account user;
-        Map<Integer, InstaPayAPI> bankAccountsMap = new HashMap<>(){
+        Map<Integer, BankType> bankAccountsMap = new HashMap<>(){
             {
-                put(1, InstaPayAPI.CIBAccount);
-                put(2, InstaPayAPI.QNBAccount);
-                put(3, InstaPayAPI.BankMisrAccount);
+                put(1, BankType.CIB);
+                put(2, BankType.QNB);
+                put(3, BankType.BankMisr);
             }
         };
-        Map<Integer, InstaPayAPI> walletsMap = new HashMap<>(){
+        Map<Integer, WalletType> walletsMap = new HashMap<>(){
             {
-                put(1,InstaPayAPI.VodafoneCash);
-                put(2,InstaPayAPI.Fawry);
+                put(1,WalletType.VodafoneCash);
+                put(2,WalletType.Fawry);
             }
         };
         Scanner sc = new Scanner(System.in);
         String name, mobileNumber, username, password;
         int accountChoice, bankChoice, walletChoice;
         String id = Integer.toString(dataManager.getAccounts().size() + 1);
-        InstaPayAPI api;
+        BankType bankApi = null;
+        WalletType walletApi = null;
         AccountAPIProvider accApi;
 
         System.out.println("Choose your Account type: \n1. Bank Account \n2. Mobile Wallet");
@@ -59,18 +60,18 @@ public class Authentication {
                 System.out.println("Invalid number, please try again: ");
                 bankChoice = sc.nextInt();
             }
-            api = bankAccountsMap.get(bankChoice);
+            bankApi = bankAccountsMap.get(bankChoice);
             System.out.println("Enter your mobile number [Must be registered at this bank account]");
             System.out.print(">> ");
             mobileNumber = sc.next();
             String mobRegex = "^01[0-2,5]{1}[0-9]{8}$";
-            while (!mobileNumber.matches(mobRegex)) {
-                System.out.print("Invalid phone number, try again: ");
+            accApi = new BankAPI(bankApi);
+            while (!mobileNumber.matches(mobRegex) || mobileNumberExists(mobileNumber) || !accApi.verifyAccount(mobileNumber, bankApi.toString())) {
+                if(!mobileNumber.matches(mobRegex)) System.out.print("Invalid phone number, try again: ");
+                if(mobileNumberExists(mobileNumber)) System.out.print("This mobile number is already registered, try again: ");
+                if(!accApi.verifyAccount(mobileNumber, bankApi.toString())) System.out.print("This mobile number is not registered in this Account Type, try again: ");
                 mobileNumber = sc.next();
             }
-            //  ------------------------ verify it is registered in the bank
-            accApi = new BankAPI(api, "www.bank.com");
-
 
             int otp = otpManager.getOTP(mobileNumber);
             System.out.println("Your otp is: " + otp);
@@ -86,17 +87,18 @@ public class Authentication {
                 System.out.println("Invalid number, please try again: ");
                 walletChoice = sc.nextInt();
             }
-            api = walletsMap.get(walletChoice);
+            walletApi = walletsMap.get(walletChoice);
             System.out.println("Please enter your mobile number [Must be registered at this wallet account]");
             System.out.print(">> ");
             mobileNumber = sc.next();
             String mobRegex = "^01[0-2,5]{1}[0-9]{8}$";
-            while (!mobileNumber.matches(mobRegex)) {
-                System.out.print("Invalid phone number, try again: ");
+            accApi = new WalletAPI(walletApi);
+            while (!mobileNumber.matches(mobRegex) || mobileNumberExists(mobileNumber) || !accApi.verifyAccount(mobileNumber, walletApi.toString())) {
+                if(!mobileNumber.matches(mobRegex)) System.out.print("Invalid phone number, try again: ");
+                if(mobileNumberExists(mobileNumber)) System.out.print("This mobile number is already registered, try again: ");
+                if(!accApi.verifyAccount(mobileNumber, walletApi.toString())) System.out.print("This mobile number is not registered in this Account Type, try again: ");
                 mobileNumber = sc.next();
             }
-            // ------------------------ verify it is registered in the wallet
-            accApi = new WalletAPI(api, "www.wallet.com");
 
             int otp = otpManager.getOTP(mobileNumber);
             System.out.println("Your otp is: " + otp);
@@ -106,13 +108,14 @@ public class Authentication {
         name = sc.next();
         System.out.print("Create your username: ");
         username = sc.next();
-        String usernameRegex = "^(?=[a-zA-Z0-9._]{8,20}$)(?!.*[_.]{2})[^_.].*[^_.]$";
+        String usernameRegex = "^[a-zA-Z0-9]*$";
 
-        while (dataManager.retrieveAccount(username) != null || username.matches(usernameRegex)) {
+        while (dataManager.retrieveAccount(username) != null || !username.matches(usernameRegex)) {
             if(dataManager.retrieveAccount(username) != null) {
                 System.out.print("This username already exists, try a different one: ");
             }
-            if(username.matches(usernameRegex)) {
+            if(!username.matches(usernameRegex)) {
+                System.out.println("Must include only alphanumeric characters!");
                 System.out.print("Invalid username, try a different one: ");
             }
             username = sc.next();
@@ -125,23 +128,24 @@ public class Authentication {
             password = sc.next();
         }
         if(accApi instanceof WalletAPI){
+            String walletID = walletApi.name() + mobileNumber;
             user = new WalletAccount(
                     id,
                     username,
                     name,password,
                     mobileNumber,
                     accApi,
-                    "105"); // edit wallet id
-
+                    walletID);
         }
-        else{
+        else {
+            String bankNumber = bankApi.name() + mobileNumber;
             user = new BankAccount(
                     id,
                     username,
                     name,password,
                     mobileNumber,
                     accApi,
-                    "105"); // edit bank number
+                    bankNumber);
         }
         dataManager.addAccount(user);
         System.out.println("Your account has been created successfully!");
@@ -193,14 +197,15 @@ public class Authentication {
         }
         return null;
     }
-//    public boolean usernameExists(String uName) {
-//        Vector<Account> accounts = dataManager.getAccounts();
-//        if(accounts != null) {
-//            for (Account acc : accounts) {
-//                if (acc.getUsername().equals(uName))
-//                    return true;
-//            }
-//        }
-//        return false;
-//    }
+
+    public boolean mobileNumberExists(String mobileNumber){
+        Vector<Account> accounts = dataManager.getAccounts();
+        if(accounts != null) {
+            for (Account acc : accounts) {
+                if (acc.getMobileNumber().equals(mobileNumber))
+                    return true;
+            }
+        }
+        return false;
+    }
 }

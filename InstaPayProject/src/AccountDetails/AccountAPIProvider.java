@@ -1,27 +1,10 @@
 package AccountDetails;
 
-public abstract class AccountAPIProvider {
-    private InstaPayAPI name;
-    String apiUrl;
+public interface AccountAPIProvider {
 
-    public void setApiUrl(String apiUrl) {
-        this.apiUrl = apiUrl;
-    }
-
-    public String getApiUrl() {
-        return apiUrl;
-    }
-
-    public InstaPayAPI getName() {
-        return name;
-    }
-
-    public void setName(InstaPayAPI name) {
-        this.name = name;
-    }
-
-    public AccountAPIProvider(InstaPayAPI name, String apiUrl) {
-        this.name = name;
-        this.apiUrl = apiUrl;
-    }
+    public boolean verifyAccount(String mobileNumber, String accType);
+    public double inquireBalance();
+    public boolean withdraw(double amount);
+    public void deposit(double amount);
+    public String getApi();
 }

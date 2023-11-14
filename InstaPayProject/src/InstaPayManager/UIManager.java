@@ -9,15 +9,19 @@ import java.util.Scanner;
 
 import static Authentication.Authentication.loggedInUser;
 
-public class GUIManager {
+public class UIManager {
+
     private DataManager DM;
     private Authentication auth;
     private TransactionManager TM;
 
-    public GUIManager() {
-        this.DM = new JSON();
+    public UIManager() {
         this.auth = new Authentication();
         this.TM = new TransactionManager(this.DM);
+        setDMStrategy();
+    }
+    public void setDMStrategy() {
+        this.DM = new JSON();
     }
     public void run() {
         System.out.println("Welcome to InstaPay :)");
@@ -71,9 +75,7 @@ public class GUIManager {
                     case "2" -> TM.transferToAccount();
                     case "3" -> TM.transferToBank();
                     case "4" -> TM.chooseBill();
-                    case "5" -> {
-//                    loggedInUser.getApi().inquireBalance();
-                    }
+                    case "5" -> loggedInUser.getApi().inquireBalance();
                     case "6" -> auth.logout();
                     case "7" -> {
                         System.out.println("Thank you for using the app!");
@@ -99,9 +101,7 @@ public class GUIManager {
                     case "1" -> TM.transferToWallet();
                     case "2" -> TM.transferToAccount();
                     case "3" -> TM.chooseBill();
-                    case "4" -> {
-//                    loggedInUser.getApi().inquireBalance();
-                    }
+                    case "4" -> loggedInUser.getApi().inquireBalance();
                     case "5" -> auth.logout();
                     case "6" -> {
                         System.out.println("Thank you for using the app!");

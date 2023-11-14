@@ -1,9 +1,9 @@
-import InstaPayManager.GUIManager;
+import InstaPayManager.UIManager;
 
 public class Main {
 
     public static void main(String[] args) {
-        GUIManager M = new GUIManager();
+        UIManager M = new UIManager();
         M.run();
     }
 }

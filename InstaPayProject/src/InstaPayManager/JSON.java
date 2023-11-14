@@ -42,20 +42,15 @@ public class JSON implements DataManager {
     }
     public JSONObject toJSONObj(AccountAPIProvider api){
         JSONObject jsonApi = new JSONObject();
-        jsonApi.put("Name",api.getName().toString());
-        jsonApi.put("APIUrl",api.getApiUrl());
+        jsonApi.put("Name",api.getApi().toString());
         return jsonApi;
     }
     // to object functions - converts json obj
     public BankAPI toBankAPI(JSONObject apiJSON){
-        return new BankAPI(
-                InstaPayAPI.valueOf(apiJSON.get("Name").toString()),
-                apiJSON.get("APIUrl").toString());
+        return new BankAPI(BankType.valueOf(apiJSON.get("Name").toString()));
     }
     public WalletAPI toWalletAPI(JSONObject apiJSON){
-        return new WalletAPI(
-                InstaPayAPI.valueOf(apiJSON.get("Name").toString()),
-                apiJSON.get("APIUrl").toString());
+        return new WalletAPI(WalletType.valueOf(apiJSON.get("Name").toString()));
     }
     // getters
     public Account getAccount(JSONObject obj){
