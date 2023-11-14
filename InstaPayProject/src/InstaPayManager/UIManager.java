@@ -75,8 +75,11 @@ public class UIManager {
                     case "2" -> TM.transferToAccount();
                     case "3" -> TM.transferToBank();
                     case "4" -> TM.chooseBill();
-                    case "5" -> loggedInUser.getApi().inquireBalance();
-                    case "6" -> auth.logout();
+                    case "5" -> System.out.println(loggedInUser.getApi().inquireBalance());
+                    case "6" -> {
+                        auth.logout();
+                        return;
+                    }
                     case "7" -> {
                         System.out.println("Thank you for using the app!");
                         System.exit(0);
@@ -101,8 +104,11 @@ public class UIManager {
                     case "1" -> TM.transferToWallet();
                     case "2" -> TM.transferToAccount();
                     case "3" -> TM.chooseBill();
-                    case "4" -> loggedInUser.getApi().inquireBalance();
-                    case "5" -> auth.logout();
+                    case "4" -> System.out.println(loggedInUser.getApi().inquireBalance());
+                    case "5" -> {
+                        auth.logout();
+                        return;
+                    }
                     case "6" -> {
                         System.out.println("Thank you for using the app!");
                         System.exit(0);

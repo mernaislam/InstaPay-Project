@@ -7,8 +7,9 @@ public abstract class Account {
     private String name;
     private String password;
     private String mobileNumber;
-    private AccountAPIProvider api;
+    protected AccountAPIProvider api;
 
+    public abstract void setApiStrategy(AccountAPIProvider api);
     public String getUsername() {
         return username;
     }
@@ -51,12 +52,11 @@ public abstract class Account {
         this.accountID = accountID;
     }
 
-    public Account(String accountID, String username, String name, String password, String mobileNumber, AccountAPIProvider api) {
+    public Account(String accountID, String username, String name, String password, String mobileNumber) {
         this.accountID = accountID;
         this.username = username;
         this.name = name;
         this.password = password;
         this.mobileNumber = mobileNumber;
-        this.api = api;
     }
 }

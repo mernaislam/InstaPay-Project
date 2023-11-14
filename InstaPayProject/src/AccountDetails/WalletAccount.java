@@ -12,7 +12,11 @@ public class WalletAccount extends Account{
     }
 
     public WalletAccount(String accountID, String username, String name, String password, String mobileNumber, AccountAPIProvider api, String walletID) {
-        super(accountID, username, name, password, mobileNumber, api);
+        super(accountID, username, name, password, mobileNumber);
         this.walletID = walletID;
+        setApiStrategy(api);
+    }
+    public void setApiStrategy(AccountAPIProvider api){
+        this.api = api;
     }
 }

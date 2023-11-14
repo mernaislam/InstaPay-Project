@@ -12,7 +12,11 @@ public class BankAccount extends Account{
     }
 
     public BankAccount(String accountID, String username, String name, String password, String mobileNumber, AccountAPIProvider api, String bankNumber) {
-        super(accountID, username, name, password, mobileNumber, api);
+        super(accountID, username, name, password, mobileNumber);
         this.bankNumber = bankNumber;
+        setApiStrategy(api);
+    }
+    public void setApiStrategy(AccountAPIProvider api){
+        this.api = api;
     }
 }
