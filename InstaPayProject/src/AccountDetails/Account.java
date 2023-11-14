@@ -1,4 +1,4 @@
-package InstaPayProject.src.AccountDetails;
+package AccountDetails;
 
 import InstaPayProject.src.Transaction.Bill;
 
@@ -10,7 +10,7 @@ public abstract class Account {
     private String name;
     private String password;
     private String mobileNumber;
-    private AccountAPIProvider api;
+    protected AccountAPIProvider api;
 
     public String getUsername() {
         return username;

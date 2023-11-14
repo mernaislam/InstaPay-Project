@@ -1,19 +1,62 @@
-package InstaPayProject.src.AccountDetails;
+package AccountDetails;
 
-import java.util.ArrayList;
-public class WalletAPI extends AccountAPIProvider{
-    private ArrayList<WalletAccount>allWalletAccounts;
-    public WalletAPI(InstaPayAPI name, String mobileNo) {
-        super(name, mobileNo);
-        allWalletAccounts = new ArrayList<>();
-    }
-    public String makeVerifactionRequest(String mobileNo){
-        for(WalletAccount a : allWalletAccounts){
-            if(a.getMobileNumber().equals(mobileNo)){
-                return "Wallet API verification response: success";
-            }
+import java.util.HashMap;
+import java.util.Map;
+import static Authentication.Authentication.loggedInUser;
+
+
+public class WalletAPI implements AccountAPIProvider{
+
+    WalletType walletType;
+    Map<String, Double> walletBalance = new HashMap<>(){
+        {
+            put("01065470583", 500d);
+            put("01065470585", 5000d);
+            put("01022199451", 30000d);
         }
-        return "Wallet API verification response: failed";
+    };
+    Map<String, WalletType> walletAccount = new HashMap<>(){
+        {
+            put("01065470583", WalletType.Fawry);
+            put("01065470585", WalletType.VodafoneCash);
+            put("01022199451", WalletType.Fawry);
+        }
+    };
+
+    public WalletAPI(WalletType walletType){
+        this.walletType = walletType;
+    }
+    @Override
+    public boolean verifyAccount(String mobileNumber, String accType){
+        String walletType = walletAccount.get(mobileNumber).toString();
+        if(walletAccount.containsKey(mobileNumber) && walletType.equals(accType)){
+            return true;
+        }
+        return false;
     }
 
+    @Override
+    public double inquireBalance(){
+        return walletBalance.get(loggedInUser.getMobileNumber());
+    }
+
+    @Override
+    public boolean withdraw(double amount){
+        double balance = walletBalance.get(loggedInUser.getMobileNumber());
+        if(amount <= balance){
+            walletBalance.put(loggedInUser.getMobileNumber(),balance-amount);
+            return true;
+        }
+        return false;
+    }
+
+    public String getApi(){
+        return walletType.name();
+    }
+
+    @Override
+    public void deposit(double amount) {
+        double balance = walletBalance.get(loggedInUser.getMobileNumber());
+        walletBalance.put(loggedInUser.getMobileNumber(), balance+amount);
+    }
 }

@@ -1,4 +1,4 @@
-package InstaPayProject.src.AccountDetails;
+package AccountDetails;
 
 import InstaPayProject.src.Transaction.Bill;
 
