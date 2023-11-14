@@ -1,7 +1,5 @@
-package Transaction;
+package TransactionDetails;
 
-import AccountDetails.Account;
-import AccountDetails.AccountAPIProvider;
 import InstaPayManager.DataManager;
 import java.time.LocalDate;
 import java.util.Scanner;

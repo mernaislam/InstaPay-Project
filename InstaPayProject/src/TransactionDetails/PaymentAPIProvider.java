@@ -1,4 +1,4 @@
-package Transaction;
+package TransactionDetails;
 
 public abstract class PaymentAPIProvider {
     protected BillType name;

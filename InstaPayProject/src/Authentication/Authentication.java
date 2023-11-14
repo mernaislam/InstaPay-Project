@@ -41,8 +41,8 @@ public class Authentication {
         InstaPayAPI api;
         AccountAPIProvider accApi;
 
-        System.out.println("Choose your Account type for the given number: \n1. Bank Account \n2. Mobile Wallet");
-        System.out.print(">>");
+        System.out.println("Choose your Account type: \n1. Bank Account \n2. Mobile Wallet");
+        System.out.print(">> ");
         accountChoice = sc.nextInt();
         while (accountChoice != 1 && accountChoice != 2) {
             System.out.print("Invalid number, please try again: ");
@@ -53,7 +53,7 @@ public class Authentication {
             for (int i = 1; i <= bankAccountsMap.size(); i++) {
                 System.out.println(i + ". " + bankAccountsMap.get(i).toString());
             }
-            System.out.print(">>");
+            System.out.print(">> ");
             bankChoice = sc.nextInt();
             while (!bankAccountsMap.containsKey(bankChoice)) {
                 System.out.println("Invalid number, please try again: ");
@@ -61,7 +61,7 @@ public class Authentication {
             }
             api = bankAccountsMap.get(bankChoice);
             System.out.println("Enter your mobile number [Must be registered at this bank account]");
-            System.out.print(">>");
+            System.out.print(">> ");
             mobileNumber = sc.next();
             String mobRegex = "^01[0-2,5]{1}[0-9]{8}$";
             while (!mobileNumber.matches(mobRegex)) {
@@ -80,7 +80,7 @@ public class Authentication {
             for (int i = 1; i <= walletsMap.size(); i++) {
                 System.out.println(i + ". " + walletsMap.get(i));
             }
-            System.out.print(">>");
+            System.out.print(">> ");
             walletChoice = sc.nextInt();
             while (!walletsMap.containsKey(walletChoice)) {
                 System.out.println("Invalid number, please try again: ");
@@ -88,7 +88,7 @@ public class Authentication {
             }
             api = walletsMap.get(walletChoice);
             System.out.println("Please enter your mobile number [Must be registered at this wallet account]");
-            System.out.print(">>");
+            System.out.print(">> ");
             mobileNumber = sc.next();
             String mobRegex = "^01[0-2,5]{1}[0-9]{8}$";
             while (!mobileNumber.matches(mobRegex)) {
@@ -109,17 +109,19 @@ public class Authentication {
         String usernameRegex = "^(?=[a-zA-Z0-9._]{8,20}$)(?!.*[_.]{2})[^_.].*[^_.]$";
 
         while (dataManager.retrieveAccount(username) != null || username.matches(usernameRegex)) {
-            if(dataManager.retrieveAccount(username) != null)
+            if(dataManager.retrieveAccount(username) != null) {
                 System.out.print("This username already exists, try a different one: ");
-          if(username.matches(usernameRegex))
-            System.out.print("Invalid username, try a different one: ");
+            }
+            if(username.matches(usernameRegex)) {
+                System.out.print("Invalid username, try a different one: ");
+            }
             username = sc.next();
         }
         System.out.print("Create your password: ");
         password = sc.next();
-        String passRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,10}$";
+        String passRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
         while (!password.matches(passRegex)) {
-            System.out.print("Must include a strong password, try again: ");
+            System.out.print("Must include a strong password that contains at least:\n . 1 uppercase letter \n . 1 special character[@$!%*?&] \n . 1 number [0-9]\n try again: ");
             password = sc.next();
         }
         if(accApi instanceof WalletAPI){

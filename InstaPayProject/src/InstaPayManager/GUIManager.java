@@ -3,7 +3,7 @@ package InstaPayManager;
 import AccountDetails.BankAccount;
 import AccountDetails.WalletAccount;
 import Authentication.Authentication;
-import Transaction.TransactionManager;
+import TransactionDetails.TransactionManager;
 
 import java.util.Scanner;
 
@@ -31,7 +31,7 @@ public class GUIManager {
                     3. Exit
                     """;
             System.out.print(options);
-            System.out.print(">>");
+            System.out.print(">> ");
             String choice = scan.nextLine();
             switch (choice) {
                 case "1":
@@ -64,33 +64,22 @@ public class GUIManager {
                         7. Exit
                         """;
                 System.out.print(options);
-                System.out.print(">>");
+                System.out.print(">> ");
                 String choice = scan.nextLine();
                 switch (choice) {
-                    case "1":
-                        TM.transferToWallet();
-                        break;
-                    case "2":
-                        TM.transferToAccount();
-                        break;
-                    case "3":
-                        TM.transferToBank();
-                        break;
-                    case "4":
-                        TM.chooseBill();
-                        break;
-                    case "5":
+                    case "1" -> TM.transferToWallet();
+                    case "2" -> TM.transferToAccount();
+                    case "3" -> TM.transferToBank();
+                    case "4" -> TM.chooseBill();
+                    case "5" -> {
 //                    loggedInUser.getApi().inquireBalance();
-                        break;
-                    case "6":
-                        auth.logout();
-                        return;
-                    case "7":
+                    }
+                    case "6" -> auth.logout();
+                    case "7" -> {
                         System.out.println("Thank you for using the app!");
                         System.exit(0);
-                    default:
-                        System.out.println("Incorrect number, please try again & choose a number between [1-7]");
-                        break;
+                    }
+                    default -> System.out.println("Incorrect number, please try again & choose a number between [1-7]");
                 }
             } else if (loggedInUser instanceof WalletAccount) {
                 Scanner scan = new Scanner(System.in);
@@ -104,30 +93,21 @@ public class GUIManager {
                         6. Exit
                         """;
                 System.out.print(options);
-                System.out.print(">>");
+                System.out.print(">> ");
                 String choice = scan.nextLine();
                 switch (choice) {
-                    case "1":
-                        TM.transferToWallet();
-                        break;
-                    case "2":
-                        TM.transferToAccount();
-                        break;
-                    case "3":
-                        TM.chooseBill();
-                        break;
-                    case "4":
+                    case "1" -> TM.transferToWallet();
+                    case "2" -> TM.transferToAccount();
+                    case "3" -> TM.chooseBill();
+                    case "4" -> {
 //                    loggedInUser.getApi().inquireBalance();
-                        break;
-                    case "5":
-                        auth.logout();
-                        return;
-                    case "6":
+                    }
+                    case "5" -> auth.logout();
+                    case "6" -> {
                         System.out.println("Thank you for using the app!");
                         System.exit(0);
-                    default:
-                        System.out.println("Incorrect number, please try again & choose a number between [1-6]");
-                        break;
+                    }
+                    default -> System.out.println("Incorrect number, please try again & choose a number between [1-7]");
                 }
             }
         }

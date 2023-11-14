@@ -1,4 +1,4 @@
-package Transaction;
+package TransactionDetails;
 
 public enum BillType {
     WATER_BILL,

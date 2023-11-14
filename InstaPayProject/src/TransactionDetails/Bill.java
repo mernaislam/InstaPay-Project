@@ -1,7 +1,6 @@
-package Transaction;
+package TransactionDetails;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 public abstract class Bill {
     protected LocalDate transactionDate;

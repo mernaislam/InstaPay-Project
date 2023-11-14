@@ -1,6 +1,4 @@
-package Transaction;
-
-import static Authentication.Authentication.loggedInUser;
+package TransactionDetails;
 
 public class BillAPI extends PaymentAPIProvider {
 

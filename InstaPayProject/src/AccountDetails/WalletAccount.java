@@ -1,9 +1,5 @@
 package AccountDetails;
 
-import Transaction.Bill;
-
-import java.util.List;
-
 public class WalletAccount extends Account{
     private String walletID;
 
