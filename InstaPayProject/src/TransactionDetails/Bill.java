@@ -2,6 +2,12 @@ package TransactionDetails;
 
 import java.time.LocalDate;
 
+/**
+ * The {@code Bill} abstract class represents a generic bill.
+ *
+ * <p>This class is part of the {@code TransactionDetails} package.
+ *
+ */
 public abstract class Bill {
     protected LocalDate transactionDate;
     protected String transactionID;

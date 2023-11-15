@@ -1,5 +1,17 @@
 package AccountDetails;
-
+/**
+ * The {@code Account} class represents a generic user account with basic information such as
+ * username, name, password, mobile number, and account ID. This class is intended to be
+ * extended by specific account types, and it includes methods for accessing and modifying
+ * account details.
+ *
+ * <p>The class also includes an abstract method, {@code setApiStrategy}, which should be
+ * implemented by subclasses to set the API strategy for the specific account type.
+ *
+ * <p>This class is part of the {@code AccountDetails} package.
+ *
+ * @see AccountAPIProvider
+ */
 public abstract class Account {
     private String username;
     private String accountID;

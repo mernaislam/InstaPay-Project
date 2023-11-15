@@ -1,5 +1,11 @@
 package TransactionDetails;
 
+/**
+ * The {@code PaymentAPIProvider} abstract class represents a generic payment API provider.
+ *
+ * <p>This class is part of the {@code TransactionDetails} package.
+ *
+ */
 public abstract class PaymentAPIProvider {
     protected BillType name;
     protected String apiUrl;

@@ -9,6 +9,15 @@ import java.util.Scanner;
 
 import static Authentication.Authentication.loggedInUser;
 
+/**
+ * The {@code UIManager} class manages the user interface for the InstaPay application.
+ *
+ * <p>This class is part of the {@code InstaPayManager} package.
+ *
+ * @see DataManager
+ * @see Authentication
+ * @see TransactionManager
+ */
 public class UIManager {
 
     private DataManager DM;

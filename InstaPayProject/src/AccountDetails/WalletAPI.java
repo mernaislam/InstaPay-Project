@@ -4,7 +4,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static Authentication.Authentication.loggedInUser;
-
+/**
+ * The {@code WalletAPI} class implements the {@code AccountAPIProvider} interface for handling
+ * wallet-related account operations such as verification, balance inquiry, withdrawal, and deposit.
+ * It associates with a specific wallet type and maintains balances for different accounts.
+ *
+ */
 public class WalletAPI implements AccountAPIProvider{
     WalletType walletType;
     Map<String, Double> walletBalance = new HashMap<>(){

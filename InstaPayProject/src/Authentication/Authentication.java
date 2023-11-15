@@ -5,20 +5,47 @@ import InstaPayManager.DataManager;
 import InstaPayManager.JSON;
 
 import java.util.*;
-
+/**
+ * The {@code Authentication} class manages user authentication, including registration, login,
+ * and logout functionality. It interacts with account-related classes, such as {@code Account},
+ * {@code BankAccount}, and {@code WalletAccount}.
+ *
+ * <p>This class is part of the {@code Authentication} package.
+ *
+ * @see Account
+ * @see BankAccount
+ * @see WalletAccount
+ * @see DataManager
+ * @see JSON
+ * @see OTPManager
+ */
 public class Authentication {
+    /** The currently logged-in user. */
      public static Account loggedInUser;
+    /** The OTP manager for generating one-time passwords. */
      OTPManager otpManager;
+    /** The data manager for handling account data. */
      DataManager dataManager;
 
+    /**
+     * Constructs an {@code Authentication} instance with an initialized OTP manager and data manager.
+     */
     public Authentication() {
         this.otpManager = new OTPManager();
         this.dataManager = new JSON();
     }
+    /**
+     * Sets the currently logged-in user.
+     *
+     * @param acc The account to be set as the logged-in user.
+     */
     void setLoggedInUser(Account acc) {
         loggedInUser = acc;
     }
 
+    /**
+     * Handles the user registration process for both bank and wallet accounts.
+     */
     public void register(){
         Account user;
         Map<Integer, BankType> bankAccountsMap = new HashMap<>(){
@@ -150,6 +177,12 @@ public class Authentication {
         dataManager.addAccount(user);
         System.out.println("Your account has been created successfully!");
     }
+
+    /**
+     * Handles the user login process.
+     *
+     * @return {@code true} if the login is successful, {@code false} otherwise.
+     */
     public boolean login(){
         Scanner sc = new Scanner(System.in);
         String username, password;
@@ -182,11 +215,21 @@ public class Authentication {
         return true;
     }
 
+    /**
+     * Logs out the currently logged-in user.
+     */
     public void logout(){
         loggedInUser = null;
         System.out.println("Logged out successfully!");
     }
 
+    /**
+     * Checks if an account with the provided username and password exists.
+     *
+     * @param uName The username to check.
+     * @param password The password to check.
+     * @return The account if found, or {@code null} if not found.
+     */
     public Account checkAccount(String uName, String password){
         Vector<Account> accounts = dataManager.getAccounts();
         if(accounts != null) {
@@ -198,6 +241,12 @@ public class Authentication {
         return null;
     }
 
+    /**
+     * Checks if a mobile number is already registered.
+     *
+     * @param mobileNumber The mobile number to check.
+     * @return {@code true} if the mobile number exists, {@code false} otherwise.
+     */
     public boolean mobileNumberExists(String mobileNumber){
         Vector<Account> accounts = dataManager.getAccounts();
         if(accounts != null) {

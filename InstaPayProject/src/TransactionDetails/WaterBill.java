@@ -2,6 +2,14 @@ package TransactionDetails;
 
 import java.time.LocalDate;
 
+/**
+ * The {@code WaterBill}, {@code GasBill}, and {@code ElectricityBill} classes extend {@code Bill}
+ * and represent specific types of bills.
+ *
+ * <p>This class is part of the {@code TransactionDetails} package.
+ *
+ * @see Bill
+ */
 public class WaterBill extends Bill {
     private double waterConsumed;
 

@@ -4,13 +4,31 @@ import InstaPayManager.DataManager;
 import java.time.LocalDate;
 import java.util.Scanner;
 import static Authentication.Authentication.loggedInUser;
+
+/**
+ * The {@code TransactionManager} class manages various transactions, including bill payments and
+ * transfers.
+ *
+ * <p>This class is part of the {@code TransactionDetails} package.
+ *
+ * @see Bill
+ * @see PaymentAPIProvider
+ */
 public class TransactionManager {
     private DataManager DM;
 
+    /**
+     * Constructs a new {@code TransactionManager} with the specified data manager.
+     *
+     * @param dm The data manager to be used for transactions.
+     */
     public TransactionManager(DataManager dm) {
         this.DM = dm;
     }
 
+     /**
+     * Allows the user to choose a bill type for payment.
+     */
     public void chooseBill() {
         System.out.println("Choose which bill you want to pay:\n1-Water bill \t 2-Gas Bill \t 3-Electricity Bill \t 4-Back");
         Scanner sc = new Scanner(System.in);
@@ -45,6 +63,11 @@ public class TransactionManager {
         }
     }
 
+    /**
+     * Processes the payment for the given bill.
+     *
+     * @param bill The bill to be paid.
+     */
     public void payBill(Bill bill) {
         //displaying the bill details
         bill.displayBillDetails();
@@ -71,6 +94,11 @@ public class TransactionManager {
         }
     }
 
+    /**
+     * Transfers money to another user's wallet.
+     *
+     * @return {@code true} if the transfer is successful, {@code false} otherwise.
+     */
     public boolean transferToWallet() {
 
         Scanner sc = new Scanner(System.in);
@@ -109,6 +137,11 @@ public class TransactionManager {
         return true;
     }
 
+    /**
+     * Transfers money to another InstaPay account.
+     *
+     * @return {@code true} if the transfer is successful, {@code false} otherwise.
+     */
     public boolean transferToAccount() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter the account name you wish to send to: ");
@@ -128,6 +161,11 @@ public class TransactionManager {
         return true;
     }
 
+    /**
+     * Transfers money to a bank account.
+     *
+     * @return {@code true} if the transfer is successful, {@code false} otherwise.
+     */
     public boolean transferToBank() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter the account name you wish to send to: ");

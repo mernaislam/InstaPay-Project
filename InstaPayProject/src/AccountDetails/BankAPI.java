@@ -4,7 +4,12 @@ import java.util.HashMap;
 import java.util.Map;
 import static Authentication.Authentication.loggedInUser;
 
-
+/**
+ * The {@code BankAPI} class implements the {@code AccountAPIProvider} interface for handling
+ * banking-related account operations such as verification, balance inquiry, withdrawal, and deposit.
+ * It associates with a specific bank type and maintains balances for different accounts.
+ *
+ */
 public class BankAPI implements AccountAPIProvider{
 
     BankType bankType;

@@ -11,6 +11,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Vector;
 
+/**
+ * The {@code JSON} class implements the {@code DataManager} interface for handling account data
+ * using JSON format.
+ *
+ * <p>This class is part of the {@code InstaPayManager} package.
+ *
+ * @see DataManager
+ */
 public class JSON implements DataManager {
     private JSONObject data;
 
