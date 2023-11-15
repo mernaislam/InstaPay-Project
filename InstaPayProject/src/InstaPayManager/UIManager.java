@@ -26,8 +26,8 @@ public class UIManager {
 
     public UIManager() {
         this.auth = new Authentication();
-        this.TM = new TransactionManager(this.DM);
         setDMStrategy();
+        this.TM = new TransactionManager(this.DM);
     }
     public void setDMStrategy() {
         this.DM = new JSON();

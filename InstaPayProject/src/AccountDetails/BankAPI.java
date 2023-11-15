@@ -34,9 +34,11 @@ public class BankAPI implements AccountAPIProvider{
         this.bankType = bankType;
     }
     @Override
-    public boolean verifyAccount(String mobileNumber, String accType) {
-        String bankType = bankAccount.get(mobileNumber).toString();
-        if(bankAccount.containsKey(mobileNumber) && accType.equals(bankType)){
+    public boolean verifyAccount(String accNum, String accType) {
+        if (!bankAccount.containsKey(accNum))
+            return false;
+        String bankType = bankAccount.get(accNum).toString();
+        if(bankAccount.containsKey(accNum) && accType.equals(bankType)){
             return true;
         }
         return false;
@@ -48,10 +50,10 @@ public class BankAPI implements AccountAPIProvider{
     }
 
     @Override
-    public boolean withdraw(double amount) {
-        double balance = bankBalance.get(loggedInUser.getMobileNumber());
+    public boolean withdraw(double amount, Account acc) {
+        double balance = bankBalance.get(acc.getMobileNumber());
         if(amount <= balance){
-            bankBalance.put(loggedInUser.getMobileNumber(), balance-amount);
+            bankBalance.put(acc.getMobileNumber(), balance-amount);
             return true;
         }
         return false;
@@ -62,8 +64,10 @@ public class BankAPI implements AccountAPIProvider{
     }
 
     @Override
-    public void deposit(double amount) {
-        double balance = bankBalance.get(loggedInUser.getMobileNumber());
-        bankBalance.put(loggedInUser.getMobileNumber(), balance+amount);
+    public void deposit(double amount, Account acc) {
+        if (acc == null)
+            return;
+        double balance = bankBalance.get(acc.getMobileNumber());
+        bankBalance.put(acc.getMobileNumber(), balance+amount);
     }
 }

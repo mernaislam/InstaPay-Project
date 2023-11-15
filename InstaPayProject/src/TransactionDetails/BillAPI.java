@@ -8,6 +8,8 @@ package TransactionDetails;
  *
  * @see PaymentAPIProvider
  */
+import static Authentication.Authentication.loggedInUser;
+
 public class BillAPI extends PaymentAPIProvider {
 
     /**
@@ -28,13 +30,10 @@ public class BillAPI extends PaymentAPIProvider {
      */
     @Override
     public boolean deductBill(Bill bill) {
-//        double balance = loggedInUser.getApi().inquireBalance();
-//        if (bill.getAmount() > balance){
-//            System.out.println("You don't have enough money");
-//            return false;
-//        }
-//        loggedInUser.getApi().withdraw(bill.getAmount());
-        return true;
+        if (loggedInUser.getApi().withdraw(bill.getTotal(), loggedInUser))
+            return true;
+        System.out.println("You don't have enough money");
+        return false;
 
     }
 

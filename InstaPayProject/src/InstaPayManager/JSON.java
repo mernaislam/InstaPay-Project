@@ -87,10 +87,10 @@ public class JSON implements DataManager {
     }
     public Vector<Account> getAccounts() {
         Vector<Account> accounts = new Vector<>();
-        JSONObject walletAccounts = (JSONObject) data.get("Accounts");
-        if(walletAccounts != null){
+        JSONObject jsonAcc = (JSONObject) data.get("Accounts");
+        if(jsonAcc != null){
             Account acc;
-            for(Object user: walletAccounts.values()){
+            for(Object user: jsonAcc.values()){
                 acc = getAccount((JSONObject) user);
                 accounts.add(acc);
             }

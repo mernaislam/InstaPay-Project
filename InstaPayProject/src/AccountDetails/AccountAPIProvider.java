@@ -25,15 +25,17 @@ public interface AccountAPIProvider {
      * Withdraws the specified amount from the account.
      *
      * @param amount The amount to be withdrawn.
+     * @param account The account to withdraw from.
      * @return {@code true} if the withdrawal is successful, {@code false} otherwise.
      */
-    public boolean withdraw(double amount);
+    public boolean withdraw(double amount, Account account);
     /**
      * Deposits the specified amount into the account.
      *
      * @param amount The amount to be deposited.
+     * @param amount The account to deposit to.
      */
-    public void deposit(double amount);
+    public void deposit(double amount, Account account);
     /**
      * Gets the API information.
      *

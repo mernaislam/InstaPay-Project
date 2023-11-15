@@ -1,5 +1,6 @@
 package TransactionDetails;
 
+import AccountDetails.*;
 import InstaPayManager.DataManager;
 import java.time.LocalDate;
 import java.util.Scanner;
@@ -68,30 +69,36 @@ public class TransactionManager {
      *
      * @param bill The bill to be paid.
      */
-    public void payBill(Bill bill) {
+    public boolean payBill(Bill bill) {
         //displaying the bill details
+        double balance = loggedInUser.getApi().inquireBalance();
         bill.displayBillDetails();
+        System.out.println("\nCurrent balance: " + balance);
+        System.out.println("New balance: " + (balance - bill.getTotal()));
         System.out.println("Proceed with payment?\n1-Yes \t 2-No");
         Scanner sc = new Scanner(System.in);
         String choice;
         choice = sc.next();
         switch (choice) {
             case "1" -> {
-                // deductBill not yet implemented
                 if (bill.getApiProvider().deductBill(bill)) {
                     System.out.println("Bill paid successfully");
+                    return true;
                 } else {
                     System.out.println("Failed to pay the bill");
+                    return false;
                 }
             }
             case "2" -> {
                 System.out.println("Bill payment canceled");
+                return false;
             }
             default -> {
                 System.out.println("Incorrect number, please try again [1-2]");
                 payBill(bill);
             }
         }
+        return true;
     }
 
     /**
@@ -103,37 +110,42 @@ public class TransactionManager {
 
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter the phone number of the wallet you wish to send to: ");
-        String wallet = sc.next();
-        String company;
-        System.out.print("Enter the wallet's company:\n1-Vodafone \t 2-Fawry");
+        String mobileNum = sc.next();
+        WalletType company = WalletType.Fawry;
+        System.out.println("Choose the wallet provider:\n1-Vodafone \t 2-Fawry \t 3-Exit");
         String choice;
         choice = sc.next();
         switch (choice) {
             case "1" -> {
-                company = "Vodafone";
+                company = WalletType.VodafoneCash;
             }
             case "2" -> {
-                company = "Fawry";
+                company = WalletType.Fawry;
+            }
+            case "3" -> {
+                return false;
             }
             default -> {
-                System.out.println("Incorrect number, please try again [1-2]");
+                System.out.println("Incorrect number, please try again [1-3]");
                 transferToWallet();
             }
         }
-        //Check if phone number exists in the company's database
-        // if not return false and print wallet doesn't exist
+        AccountAPIProvider wallet = new WalletAPI(company);
+        if (!wallet.verifyAccount(mobileNum, company.toString())){
+            System.out.println("Wallet doesn't exist");
+            return false;
+        }
 
-        // to be fixed when AccountAPI constructor is made
-//         AccountAPIProvider receiverApi = new AccountAPIProvider();
-//        System.out.println("Your current balance: " + AccountAPIProvider.inquireBalance());
+        System.out.println("Your current balance: " + loggedInUser.getApi().inquireBalance());
         System.out.print("Amount to be transferred: ");
         double amount = sc.nextDouble();
-//        if (AccountAPIProvider.inquireBalance() < amount){
-//            System.out.println("You don't have enough money");
-//            return false;
-//        }
-//        loggedInUser.getApi().withdraw(amount);
-//        receiverApi.deposit(amount);
+        if (!loggedInUser.getApi().withdraw(amount, loggedInUser)){
+            System.out.println("You don't have enough money");
+            return false;
+        }
+        wallet.deposit(amount, null);
+        System.out.println("Transfer successful!");
+
         return true;
     }
 
@@ -146,18 +158,20 @@ public class TransactionManager {
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter the account name you wish to send to: ");
         String accName = sc.nextLine();
-        //check el database law fe account be accName da
-        //law la2 return false wa print acc doesn't exist
-        //create instance bel receiver account
+        Account receiver = DM.retrieveAccount(accName);
+        if (receiver == null){
+            System.out.print("This account doesn't exist");
+            return false;
+        }
+        System.out.println("Your current balance: " + loggedInUser.getApi().inquireBalance());
         System.out.print("Amount to be transferred: ");
         double amount = sc.nextDouble();
-//        double balance = loggedInUser.getApi().inquireBalance();
-//        if (amount > balance){
-//            System.out.println("You don't have enough money");
-//            return false;
-//        }
-//        loggedInUser.getApi().withdraw(amount);
-//         receiver.getApi().deposit(amount);
+        if (!loggedInUser.getApi().withdraw(amount, loggedInUser)){
+            System.out.println("You don't have enough money");
+            return false;
+        }
+        receiver.getApi().deposit(amount, receiver);
+        System.out.println("Transfer successful!");
         return true;
     }
 
@@ -168,22 +182,45 @@ public class TransactionManager {
      */
     public boolean transferToBank() {
         Scanner sc = new Scanner(System.in);
-        System.out.println("Enter the account name you wish to send to: ");
-        String accName = sc.nextLine();
-        System.out.println("Enter the bank number you wish to send to: ");
+        System.out.println("Enter the Bank account number you wish to send to: ");
         String bankNum = sc.next();
-        // check if accName exists with this bankNum
-        // if not return false and print unable to transfer to unregistered bank account
-        // create instance of receiving account
+        System.out.println("Choose his bank provider:\n1-Bank Misr \t 2-QNB \t 3-CIB \t 4-Exit");
+        BankType company = BankType.CIB;
+
+        String choice;
+        choice = sc.next();
+        switch (choice) {
+            case "1" -> {
+                company = BankType.BankMisr;
+            }
+            case "2" -> {
+                company = BankType.QNB;
+            }
+            case "3" -> {
+                company = BankType.CIB;
+            }
+            case "4" -> {
+                return false;
+            }
+            default -> {
+                System.out.println("Incorrect number, please try again [1-4]");
+                transferToBank();
+            }
+        }
+        AccountAPIProvider bank = new BankAPI(company);
+        if (!bank.verifyAccount(bankNum, company.toString())){
+            System.out.println("Bank account doesn't exist");
+            return false;
+        }
+        System.out.println("Your current balance: " + loggedInUser.getApi().inquireBalance());
         System.out.print("Amount to be transferred: ");
         double amount = sc.nextDouble();
-//        double balance = loggedInUser.getApi().inquireBalance();
-//        if (amount > balance){
-//            System.out.println("You don't have enough money");
-//            return false;
-//        }
-//        loggedInUser.getApi().withdraw(amount);
-//         receiver.getApi().deposit(amount);
+        if (!loggedInUser.getApi().withdraw(amount, loggedInUser)){
+            System.out.println("You don't have enough money");
+            return false;
+        }
+         bank.deposit(amount, null);
+        System.out.println("Transfer successful!");
         return true;
     }
 }
