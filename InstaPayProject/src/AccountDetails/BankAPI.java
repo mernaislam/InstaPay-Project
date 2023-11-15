@@ -29,11 +29,11 @@ public class BankAPI implements AccountAPIProvider{
         this.bankType = bankType;
     }
     @Override
-    public boolean verifyAccount(String bankNum, String accType) {
-        if (!bankAccount.containsKey(bankNum))
+    public boolean verifyAccount(String accNum, String accType) {
+        if (!bankAccount.containsKey(accNum))
             return false;
-        String bankType = bankAccount.get(bankNum).toString();
-        if(bankAccount.containsKey(bankNum) && accType.equals(bankType)){
+        String bankType = bankAccount.get(accNum).toString();
+        if(bankAccount.containsKey(accNum) && accType.equals(bankType)){
             return true;
         }
         return false;

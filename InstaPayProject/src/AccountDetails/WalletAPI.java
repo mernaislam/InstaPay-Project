@@ -26,11 +26,11 @@ public class WalletAPI implements AccountAPIProvider{
         this.walletType = walletType;
     }
     @Override
-    public boolean verifyAccount(String mobileNumber, String accType) {
-        if (!walletAccount.containsKey(mobileNumber))
+    public boolean verifyAccount(String accNum, String accType) {
+        if (!walletAccount.containsKey(accNum))
             return false;
-        String walletType = walletAccount.get(mobileNumber).toString();
-        if(walletAccount.containsKey(mobileNumber) && walletType.equals(accType)){
+        String walletType = walletAccount.get(accNum).toString();
+        if(walletAccount.containsKey(accNum) && walletType.equals(accType)){
             return true;
         }
         return false;
