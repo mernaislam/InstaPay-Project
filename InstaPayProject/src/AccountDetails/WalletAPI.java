@@ -27,6 +27,8 @@ public class WalletAPI implements AccountAPIProvider{
     }
     @Override
     public boolean verifyAccount(String mobileNumber, String accType) {
+        if (!walletAccount.containsKey(mobileNumber))
+            return false;
         String walletType = walletAccount.get(mobileNumber).toString();
         if(walletAccount.containsKey(mobileNumber) && walletType.equals(accType)){
             return true;
@@ -44,18 +46,20 @@ public class WalletAPI implements AccountAPIProvider{
     }
 
     @Override
-    public boolean withdraw(double amount) {
-        double balance = walletBalance.get(loggedInUser.getMobileNumber());
+    public boolean withdraw(double amount, Account acc) {
+        double balance = walletBalance.get(acc.getMobileNumber());
         if(amount <= balance){
-            walletBalance.put(loggedInUser.getMobileNumber(), balance-amount);
+            walletBalance.put(acc.getMobileNumber(), balance-amount);
             return true;
         }
         return false;
     }
 
     @Override
-    public void deposit(double amount) {
-        double balance = walletBalance.get(loggedInUser.getMobileNumber());
-        walletBalance.put(loggedInUser.getMobileNumber(), balance+amount);
+    public void deposit(double amount, Account acc) {
+        if (acc == null)
+            return;
+        double balance = walletBalance.get(acc.getMobileNumber());
+        walletBalance.put(acc.getMobileNumber(), balance+amount);
     }
 }
